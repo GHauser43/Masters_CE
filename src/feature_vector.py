@@ -14,7 +14,7 @@ class FeatureVector:
     def __init__(self, dim, k, s, p):
         self.d = dim
         self.k = k
-        self.s = s # TO-DO: s is currently not implemented
+        self.s = s  # TO-DO: s is currently not implemented
         self.p = p
 
         self.dlin = self.d * self.k
@@ -28,7 +28,7 @@ class FeatureVector:
         # initialize storage
         linear_featureVector = np.zeros((self.dlin, N))
         for delay in range(self.k):
-            for j in range(delay,N):
+            for j in range(delay, N):
                 linear_featureVector[self.d * delay:self.d * (delay + 1), j] = data[:, j - delay]  # noqa: E501
         return linear_featureVector
 
@@ -50,12 +50,10 @@ class FeatureVector:
         # generate linear part of feature vector
         linear_featureVector = self.construct_linear(N, data)
         # generate nonlinear part of feature vector
-        nonlinear_featureVector = self.construct_nonlinear(N, linear_featureVector)
+        nonlinear_featureVector = self.construct_nonlinear(N, linear_featureVector)  # noqa: E501
         # combine all parts of feature vector
         full_featureVector = np.vstack((constant_featureVector,
-                                   linear_featureVector,
-                                   nonlinear_featureVector))
+                                        linear_featureVector,
+                                        nonlinear_featureVector))
         # remove delay taps, then return full feature vector
-        print(full_featureVector[:,self.s * (self.k-1):])
-        return full_featureVector
-
+        return full_featureVector[:, self.s * (self.k-1):]

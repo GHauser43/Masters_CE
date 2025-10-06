@@ -85,7 +85,8 @@ def main():
     errorTime_pts = int(errorTime/dt)
     warmtrainTime_pts = warmupTime_pts + trainTime_pts
     totalTime_pts = warmupTime_pts + trainTime_pts + testTime_pts
-    delayTime_pts = (k - 1) * s  # TO-DO: add check that num warmup points > (k-1)*s
+    delayTime_pts = (k - 1) * s
+    # TO-DO: add check that num warmup points > (k-1)*s
 
     # data generation parameters
     numIntegrator = args.numIntegrator
@@ -114,7 +115,7 @@ def main():
                                      totalTime_pts)
     print('data generation - finished')
 
-    # TO-DO: Construct feature vector
+    # Construct feature vector
     print('-----------------------------')
     print('feature vector construction - started')
     # create instance of feature vector class
