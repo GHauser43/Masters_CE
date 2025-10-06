@@ -243,5 +243,10 @@ def split_data(array,
     #   array - numpy array of shape (dim, # time points)
     #   time_point1 - index of first time point 
     #   time_point2 - index of second time point 
-    result = array[:, time_point1:time_point2]
+
+    if array.ndim == 1:
+        result = array[time_point1:time_point2]
+    elif array.ndim == 2:
+        result = array[:, time_point1:time_point2]
+
     return result
