@@ -17,9 +17,9 @@ class TestDataGeneration(unittest.TestCase):
                                     [7, 8, 9]])
         npt.assert_array_equal(array_result, array_expected)
 
-        array = np.array([[1, 2, 3, 4, 5]])
+        array = np.array([1, 2, 3, 4, 5])
         array_result = dg.split_data(array, 0, 3)
-        array_expected = np.array([[1, 2, 3]])
+        array_expected = np.array([1, 2, 3])
         npt.assert_array_equal(array_result, array_expected)
 
 
