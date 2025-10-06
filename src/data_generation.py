@@ -233,3 +233,15 @@ def generate_data(numIntegrator, system, t0, dt, totalTime_pts):
         raise ValueError("The generated trajectory contains NaN values. Try reducing the time step or changing the integrator.")  # noqa: E501
 
     return trajectory_history, time_history, dim
+
+
+def split_data(array,
+               time_point1,
+               time_point2):
+    # splits data - returns data in array between index time_point1 and time_point2
+    # inputs:
+    #   array - numpy array of shape (dim, # time points)
+    #   time_point1 - index of first time point 
+    #   time_point2 - index of second time point 
+    result = array[:, time_point1:time_point2]
+    return result

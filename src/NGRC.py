@@ -1,12 +1,13 @@
 # import libraries
-import data_generation as dg
 import numpy as np
 import argparse
+import data_generation as dg
+import feature_vector as fv
 
 
-### input paramaters
+# input paramaters
 def parse_args():
-    parser = argparse.ArgumentParser(description="Generalized Next Generation Resivoir Computing code")
+    parser = argparse.ArgumentParser(description="Generalized Next Generation Resivoir Computing code")  # noqa: E501
     # data generation
     parser.add_argument('--numIntegrator',
                         type=str,
@@ -19,7 +20,7 @@ def parse_args():
     parser.add_argument('--system',
                         type=str,
                         default='Lorenz_63',
-                        help='system of equations for data generation (Lorenz...)')
+                        help='system of equations for data generation (Lorenz...)')  # noqa: E501
     # simmulation times
     parser.add_argument('--startTime',
                         type=float,
@@ -55,11 +56,13 @@ def main():
     print('-----------------------------')
     print("Starting NGRC code")
     args = parse_args()
-
+    # TO-DO: add feat vec construction inputs in later version
+    k = 2
+    s = 1
+    p = 2
     # TO-DO: print out all parser arguments at beginning output
     # TO-DO: add necessary chechs for parser arguments
 
-    
     # time parameters
     dt = args.dt
     t0 = args.startTime
@@ -90,15 +93,36 @@ def main():
     # generate data
     print('-----------------------------')
     print('data generation - started')
-    trajectory_history, time_history, dim = dg.generate_data(numIntegrator,
+    trajectoryHistory, timeHistory, dim = dg.generate_data(numIntegrator,
                                                            system,
                                                            t0,
                                                            dt,
                                                            totalTime_pts)
-    print('data generation - completed')
-
+    # splits data into training and testing blocks
+    trajectoryHistory_train = dg.split_data(trajectoryHistory,
+                                            warmupTime_pts,
+                                            warmtrainTime_pts)
+    timeHistory_train = dg.split_data(timeHistory,
+                                      warmupTime_pts,
+                                      warmtrainTime_pts)
+    trajectoryHistory_test = dg.split_data(trajectoryHistory,
+                                           warmtrainTime_pts,
+                                           totalTime_pts)
+    timeHistory_test = dg.split_data(timeHistory,
+                                     warmtrainTime_pts,
+                                     totalTime_pts)
+    print('data generation - finished')
 
     # TO-DO: Generate feature vector
+    print('-----------------------------')
+    print('feature vector generation - started')
+    # create instance of feature vector class
+    # TO-DO: add inputs later
+    # featureVector = fv.FeatureVector(dim, k, s, p))
+    # featureVector_train = featureVector.construct_featureVector(trajectoryHistory_train)  # noqa: E501
+
+    print('feature vector generation - finished')
+
     # TO-DO: Preform regression
     # TO-DO: Prediction
     # TO-DO: Error and plotting
@@ -106,7 +130,6 @@ def main():
     print('-----------------------------')
     print("Finished NGRC code")
     print('-----------------------------')
-
 
 
 if __name__ == "__main__":
