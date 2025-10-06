@@ -27,19 +27,19 @@ def parse_args():
                         help='time the system starts from')
     parser.add_argument('--warmupTime',
                         type=float,
-                        default=5,
+                        default=2,
                         help='warmup time before training data')
     parser.add_argument('--trainTime',
                         type=float,
-                        default=10,
+                        default=5,
                         help='total time for training data')
     parser.add_argument('--testTime',
                         type=float,
-                        default=10,
+                        default=1,
                         help='total time for testing data')
     parser.add_argument('--plotTime',
                         type=float,
-                        default=10,
+                        default=1,
                         help='total time for plotting data')
     # TO-DO: input how many data points to skip
     # TO-DO: plotTime <= testTime
@@ -52,8 +52,12 @@ def parse_args():
 
 
 def main():
-
+    print('-----------------------------')
+    print("Starting NGRC code")
     args = parse_args()
+
+    # TO-DO: print out all parser arguments at beginning output
+    # TO-DO: add necessary chechs for parser arguments
 
     
     # time parameters
@@ -79,22 +83,29 @@ def main():
     warmtrainTime_pts = warmupTime_pts + trainTime_pts
     totalTime_pts = warmupTime_pts + trainTime_pts + testTime_pts
 
+    # data generation parameters
+    numIntegrator = args.numIntegrator
+    system = args.system
+
     # generate data
-    trajectory_history, time_history, dim = dg.generate_data('rk4',
-                                                           'Lorenz_9dim',
+    print('-----------------------------')
+    print('data generation - started')
+    trajectory_history, time_history, dim = dg.generate_data(numIntegrator,
+                                                           system,
                                                            t0,
-                                                           .1,
-                                                           1000)
-
-
-
-    print(trajectory_history)
+                                                           dt,
+                                                           totalTime_pts)
+    print('data generation - completed')
 
 
     # TO-DO: Generate feature vector
     # TO-DO: Preform regression
     # TO-DO: Prediction
     # TO-DO: Error and plotting
+
+    print('-----------------------------')
+    print("Finished NGRC code")
+    print('-----------------------------')
 
 
 

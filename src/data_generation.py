@@ -201,6 +201,9 @@ def generate_data(numIntegrator, system, t0, dt, totalTime_pts):
     dim = system.dim
     X0 = system.X0
 
+    print(f'System dimension: {dim}')
+    print(f'Initial condition: {X0}')
+
     # data generation
     if scipy_integrator is True:
 
