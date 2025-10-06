@@ -32,7 +32,7 @@ def parse_args():
                         help='warmup time before training data')
     parser.add_argument('--trainTime',
                         type=float,
-                        default=5,
+                        default=.01,
                         help='total time for training data')
     parser.add_argument('--testTime',
                         type=float,
@@ -42,7 +42,6 @@ def parse_args():
                         type=float,
                         default=1,
                         help='total time for plotting data')
-    # TO-DO: input how many data points to skip
     # TO-DO: plotTime <= testTime
     parser.add_argument('--errorTime',
                         type=float,
@@ -56,12 +55,13 @@ def main():
     print('-----------------------------')
     print("Starting NGRC code")
     args = parse_args()
-    # TO-DO: add feat vec construction inputs in later version
+    # TO-DO: add feat vec construction inputs to argparse
     k = 2
     s = 1
     p = 2
     # TO-DO: print out all parser arguments at beginning output
-    # TO-DO: add necessary chechs for parser arguments
+    # TO-DO: add necessary checks for parser arguments
+    # TO-DO: config file
 
     # time parameters
     dt = args.dt
@@ -85,6 +85,7 @@ def main():
     errorTime_pts = int(errorTime/dt)
     warmtrainTime_pts = warmupTime_pts + trainTime_pts
     totalTime_pts = warmupTime_pts + trainTime_pts + testTime_pts
+    delayTime_pts = (k - 1) * s  # TO-DO: add check that num warmup points > (k-1)*s
 
     # data generation parameters
     numIntegrator = args.numIntegrator
@@ -100,10 +101,10 @@ def main():
                                                            totalTime_pts)
     # splits data into training and testing blocks
     trajectoryHistory_train = dg.split_data(trajectoryHistory,
-                                            warmupTime_pts,
+                                            warmupTime_pts - delayTime_pts,
                                             warmtrainTime_pts)
     timeHistory_train = dg.split_data(timeHistory,
-                                      warmupTime_pts,
+                                      warmupTime_pts - delayTime_pts,
                                       warmtrainTime_pts)
     trajectoryHistory_test = dg.split_data(trajectoryHistory,
                                            warmtrainTime_pts,
@@ -113,23 +114,22 @@ def main():
                                      totalTime_pts)
     print('data generation - finished')
 
-    # TO-DO: Generate feature vector
+    # TO-DO: Construct feature vector
     print('-----------------------------')
-    print('feature vector generation - started')
+    print('feature vector construction - started')
     # create instance of feature vector class
-    # TO-DO: add inputs later
-    # featureVector = fv.FeatureVector(dim, k, s, p))
-    # featureVector_train = featureVector.construct_featureVector(trajectoryHistory_train)  # noqa: E501
-
-    print('feature vector generation - finished')
+    featureVector = fv.FeatureVector(dim, k, s, p)
+    # construct feature vector for training data
+    featureVector_train = featureVector.construct_featureVector(trajectoryHistory_train)  # noqa: E501
+    print('feature vector construction - finished')
 
     # TO-DO: Preform regression
     # TO-DO: Prediction
     # TO-DO: Error and plotting
 
-    print('-----------------------------')
-    print("Finished NGRC code")
-    print('-----------------------------')
+    # print('-----------------------------')
+    # print("Finished NGRC code")
+    # print('-----------------------------')
 
 
 if __name__ == "__main__":
