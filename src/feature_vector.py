@@ -43,7 +43,6 @@ class FeatureVector:
         return nonlinear_featureVector
 
     def construct_featureVector(self, data):
-        print('constructing feature vector')
         N = data.shape[1]  # number of time points
         # generate constant part of feature vector
         constant_featureVector = self.construct_constant(N)
