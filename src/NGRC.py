@@ -3,6 +3,7 @@ import numpy as np
 import argparse
 import data_generation as dg
 import feature_vector as fv
+import regression_methods as rm
 
 
 # input paramaters
@@ -55,10 +56,7 @@ def main():
     print('-----------------------------')
     print("Starting NGRC code")
     args = parse_args()
-    # TO-DO: add feat vec construction inputs to argparse
-    k = 2
-    s = 1
-    p = 2
+    
     # TO-DO: print out all parser arguments at beginning output
     # TO-DO: add necessary checks for parser arguments
     # TO-DO: config file
@@ -91,6 +89,16 @@ def main():
     # data generation parameters
     numIntegrator = args.numIntegrator
     system = args.system
+
+    # feature vector parameters 
+    # TO-DO: add feat vec construction inputs to argparse
+    k = 2
+    s = 1
+    p = 2
+
+    # regression parameters
+    regMethod = 'ridge'
+    lambda_2 = 1.5e-6
 
     # generate data
     print('-----------------------------')
