@@ -4,14 +4,14 @@
 # to run NGRC.py: ./run.sh
 
 if [ "$1" = "help" ]; then
-    python NGRC.py --help
+    python3 NGRC.py --help
     exit 0
 fi
 echo "||"
 echo "|| running"
 echo "||"
 
-python NGRC.py > output.txt
+python3 NGRC.py > output.txt
 
 echo "||"
 echo "|| finished"

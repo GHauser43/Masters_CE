@@ -75,6 +75,12 @@ def main():
     if errorTime > testTime:
         raise ValueError("errorTime must be less than or equal to testTime")
 
+    # feature vector parameters 
+    # TO-DO: add feat vec construction inputs to argparse
+    k = 2
+    s = 1
+    p = 2
+    
     # discretized number of time points
     warmupTime_pts = int(warmupTime/dt)
     trainTime_pts = int(trainTime/dt)
@@ -90,15 +96,16 @@ def main():
     numIntegrator = args.numIntegrator
     system = args.system
 
-    # feature vector parameters 
-    # TO-DO: add feat vec construction inputs to argparse
-    k = 2
-    s = 1
-    p = 2
-
     # regression parameters
+
+    #initialize all, update from parser for use
+    regMethod = None
+    lambda1 = None
+    lambda2 = None
+    tol = None
+
     regMethod = 'ridge'
-    lambda_2 = 1.5e-6
+    lambda2 = 1.5e-6
 
     # generate data
     print('-----------------------------')
@@ -110,17 +117,17 @@ def main():
                                                            totalTime_pts)
     # splits data into training and testing blocks
     trajectoryHistory_train = dg.split_data(trajectoryHistory,
-                                            warmupTime_pts - delayTime_pts,
-                                            warmtrainTime_pts)
+                                            warmupTime_pts - delayTime_pts-1,
+                                            warmtrainTime_pts-1)
     timeHistory_train = dg.split_data(timeHistory,
-                                      warmupTime_pts - delayTime_pts,
-                                      warmtrainTime_pts)
-    trajectoryHistory_test = dg.split_data(trajectoryHistory,
-                                           warmtrainTime_pts,
-                                           totalTime_pts)
-    timeHistory_test = dg.split_data(timeHistory,
-                                     warmtrainTime_pts,
-                                     totalTime_pts)
+                                      warmupTime_pts - delayTime_pts-1,
+                                      warmtrainTime_pts-1)
+    #trajectoryHistory_test = dg.split_data(trajectoryHistory,
+    #                                       warmtrainTime_pts,
+    #                                       totalTime_pts)
+    #timeHistory_test = dg.split_data(timeHistory,
+    #                                 warmtrainTime_pts,
+    #                                 totalTime_pts)
     print('data generation - finished')
 
     # Construct feature vector
@@ -132,7 +139,22 @@ def main():
     featureVector_train = featureVector.construct_featureVector(trajectoryHistory_train)  # noqa: E501
     print('feature vector construction - finished')
 
-    # TO-DO: Preform regression
+    # Preform regression
+    print('-----------------------------')
+    print('preform regression - started')
+    # creates target output for change in dynamics over one time step
+    target = dg.split_data(trajectoryHistory,warmupTime_pts,warmtrainTime_pts) - dg.split_data(trajectoryHistory, warmupTime_pts-1, warmtrainTime_pts-1)
+    # perform regression to get coefficient_values that map featureVector to target
+    coefficient_values = rm.perform_regression(featureVector_train,
+                                               target,
+                                               regMethod,
+                                               lambda1,
+                                               lambda2,
+                                               tol)
+    # TO-DO: add if statement for regression grid search
+    print('preform regression - finished')
+    
+
     # TO-DO: Prediction
     # TO-DO: Error and plotting
 
