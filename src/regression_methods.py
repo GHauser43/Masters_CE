@@ -38,14 +38,15 @@ def perform_regression(featureVector,
 
     if regMethod == 'ridge':
         coefficient_values = Ridge_regression(featureVector,target,lambda2) 
-    
+    elif regMethod == 'lasso':
+        print('TO-DO')
+    elif regMethod == "elasticNet":
+        print('TO-DO')
 
     return coefficient_values
 
 
-
-
-
-
 def perform_regression_grid_search():
+    # TO-DO
     print('c')
+
