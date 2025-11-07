@@ -1,0 +1,10 @@
+name: CE_env
+channels:
+  - conda-forge
+dependencies:
+  - matplotlib>=3.10.6
+  - numpy>=2.3.3
+  - pycodestyle>=2.14.0
+  - python>=3.13.7
+  - scikit-learn>=1.7.1
+  - scipy>=1.16.2

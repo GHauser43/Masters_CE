@@ -166,7 +166,7 @@ def solver(numIntegrator, system, X0, h, n, t0):
 
 # self defined numerical integrators
 defined_integrate_map = {
-    'rk4': runge_kutta_4,
+    'rk4': runge_kutta_4
     }
 
 # numerical integrators from scipy.integrate solve_ivp
