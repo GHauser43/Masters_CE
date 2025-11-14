@@ -16,9 +16,8 @@ def main():
     print('-----------------------------')
     print("Starting NGRC code")
     
-    # TO-DO: print out all parser arguments at beginning output
-    # TO-DO: add necessary checks for parser arguments
-    # TO-DO: config file
+    # TO-DO: add checks for parser arguments on assignment
+    # TO-DO: make config file templates
     
     # loads config file
     parser = argparse.ArgumentParser()
@@ -76,41 +75,59 @@ def main():
     delayTime_pts = (k - 1) * s
     
     # check necessary conditions for program to run
+    # time values are logical
     if plotTime > testTime:
         raise ValueError("plotTime must be less than or equal to testTime")
     if errorTime > testTime:
         raise ValueError("errorTime must be less than or equal to testTime")
     if warmupTime_pts <= (k-1)*s:
         raise ValueError("required that WarmupTime_pts > (k-1)*s, increase warmupTime")
+    # regression methods have needed varaibles
+    if regMethod == 'lasso':
+        if lambda1 is None:
+            raise ValueError("lambda1 is required for lasso regression")
+        if tol is None:
+            raise ValueError("tol is required for lasso regression")
+    if regMethod == 'ridge':
+        if lambda2 is None:
+            raise ValueError("lambda2 is required for ridge regression")
+    if regMethod == 'elasticNet':
+        if lambda1 is None:
+            raise ValueError("lambda1 is required for elasticNet regression")
+        if lambda2 is None:
+            raise ValueError("lambda2 is required for elasticNet regression")
+        if tol is None:
+            raise ValueError("tol is required for elasticNet regression")
+    
 
     # output parameter values
     print('-----------------------------')
     print('time parameters')
-    print('dt: ', dt)
-    print('startTime: ', t0)
-    print('warmupTime: ', warmupTime)
-    print('trainTime: ', trainTime)
-    print('testTime: ', testTime)
-    print('plotTime: ', plotTime)
-    print('errorTime: ', errorTime)
+    print('  dt:         ', dt)
+    print('  startTime:  ', t0)
+    print('  warmupTime: ', warmupTime)
+    print('  trainTime:  ', trainTime)
+    print('  testTime:   ', testTime)
+    print('  plotTime:   ', plotTime)
+    print('  errorTime:  ', errorTime)
     print('data generation parameters')
-    print('system: ', system)
-    print('numerical_integrator: ', numIntegrator)
+    print('  system:               ', system)
+    print('  numerical_integrator: ', numIntegrator)
     print('feature vector parameters') 
-    print('k: ', k)
-    print('s: ', s)
-    print('p: ', p)
+    print('  k: ', k)
+    print('  s: ', s)
+    print('  p: ', p)
     print('regression parameters')
-    print('regression_method: ', regMethod)
+    print('  regression_method: ', regMethod)
     if regMethod == 'lasso':
-        print('lambda1: ', lambda1 )
-        print('tolerance: ', tol)
+        print('  lambda1:   ', lambda1 )
+        print('  tolerance: ', tol)
     if regMethod == 'ridge':
-        print('lambda2: ', lambda2)
+        print('  lambda2: ', lambda2)
     if regMethod == 'elasticNet':
-        print('lambda1: ', lambda1)
-        print('lambda2: ', lambda2)
-        print('tolerance: ', tol)
+        print('  lambda1:   ', lambda1)
+        print('  lambda2:   ', lambda2)
+        print('  tolerance: ', tol)
 
 
     # generate data
@@ -157,7 +174,7 @@ def main():
                                                lambda1,
                                                lambda2,
                                                tol)
-    # TO-DO: add if statement for regression grid search
+    # TO-DO: add regression grid search option
     print('preform regression - finished')
     
 
