@@ -22,6 +22,7 @@ class TestDataGeneration(unittest.TestCase):
         array_expected = np.array([1, 2, 3])
         npt.assert_array_equal(array_result, array_expected)
 
+        # add test for split data with feature vector params
 
 if __name__ == '__main__':
     unittest.main()
