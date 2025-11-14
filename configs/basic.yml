@@ -1,0 +1,31 @@
+# basic config file for NGRC.py
+# this file is used for code development
+
+# time parameters 
+dt: 0.0025
+startTime: 0.0
+warmupTime: 2.0
+trainTime: 0.1
+testTime: 1.0
+plotTime: 1.0
+errorTime: 1.0
+
+
+
+# data generation parameters
+system: 'Lorenz_63'
+numerical_integrator: 'rk4'
+
+
+# feature vector parameters
+k: 2
+s: 1
+p: 2
+
+
+# regression parameters
+regression_method: 'ridge'
+lambda1:
+lambda2: 1.5e-6
+tolerance:
+
