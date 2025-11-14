@@ -11,7 +11,7 @@ echo "||"
 echo "|| running"
 echo "||"
 
-python3 NGRC.py > output.txt
+python3 src/NGRC.py --config configs/basic.yml > output.txt
 
 echo "||"
 echo "|| finished"

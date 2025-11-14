@@ -1,6 +1,7 @@
 # import libraries
 import numpy as np
 import argparse
+import yaml
 import data_generation as dg
 import feature_vector as fv
 import regression_methods as rm
@@ -8,80 +9,63 @@ import regression_methods as rm
 
 # input paramaters
 def parse_args():
-    parser = argparse.ArgumentParser(description="Generalized Next Generation Resivoir Computing code")  # noqa: E501
-    # data generation
-    parser.add_argument('--numIntegrator',
-                        type=str,
-                        default='rk4',
-                        help='numerical integration method( scipy: RK23, RK45, DOP853, Radau, BDF, LSODA; self defined: rk4 )')  # noqa: E501
-    parser.add_argument('--dt',
-                        type=float,
-                        default=0.0025,
-                        help='time step for data generation')
-    parser.add_argument('--system',
-                        type=str,
-                        default='Lorenz_63',
-                        help='system of equations for data generation (Lorenz...)')  # noqa: E501
-    # simmulation times
-    parser.add_argument('--startTime',
-                        type=float,
-                        default=0,
-                        help='time the system starts from')
-    parser.add_argument('--warmupTime',
-                        type=float,
-                        default=2,
-                        help='warmup time before training data')
-    parser.add_argument('--trainTime',
-                        type=float,
-                        default=.01,
-                        help='total time for training data')
-    parser.add_argument('--testTime',
-                        type=float,
-                        default=1,
-                        help='total time for testing data')
-    parser.add_argument('--plotTime',
-                        type=float,
-                        default=1,
-                        help='total time for plotting data')
-    # TO-DO: plotTime <= testTime
-    parser.add_argument('--errorTime',
-                        type=float,
-                        default=1,
-                        help='total time for error calculation')
-    # TO-DO: errorTime <= testTime
-    return parser.parse_args()
+    return 1
 
 
 def main():
     print('-----------------------------')
     print("Starting NGRC code")
-    args = parse_args()
     
     # TO-DO: print out all parser arguments at beginning output
     # TO-DO: add necessary checks for parser arguments
     # TO-DO: config file
+    
+    # loads config file
+    parser = argparse.ArgumentParser()
+    parser.add_argument('--config', type=str, required=True)
+    args = parser.parse_args()
+
+    f = open(args.config, 'r')
+    config = yaml.load(f, Loader=yaml.FullLoader)
+    f.close()
 
     # time parameters
-    dt = args.dt
-    t0 = args.startTime
-    warmupTime = args.warmupTime
-    trainTime = args.trainTime
-    testTime = args.testTime
-    plotTime = args.plotTime
-    errorTime = args.errorTime
-
-    if plotTime > testTime:
-        raise ValueError("plotTime must be less than or equal to testTime")
-    if errorTime > testTime:
-        raise ValueError("errorTime must be less than or equal to testTime")
-
-    # feature vector parameters 
-    # TO-DO: add feat vec construction inputs to argparse
-    k = 2
-    s = 1
-    p = 2
+    dt = config['dt']
+    t0 = config['startTime']
+    warmupTime = config['warmupTime']
+    trainTime = config['trainTime']
+    testTime = config['testTime']
+    plotTime = config['plotTime']
+    errorTime = config['errorTime']
     
-    # discretized number of time points
+    # data generation parameters
+    system = config['system']
+    numIntegrator = config['numerical_integrator']
+
+    # feature vector parameters
+    k = config['k']
+    s = config['s']
+    p = config['p']
+
+    # regression parameters
+    regMethod = config['regression_method']
+    # initialize variables
+    lambda1 = None
+    lambda2 = None
+    tol = None
+    # gets necessary parameters for given regression method
+    # may need to update if add more regression emthods
+    if regMethod == 'lasso':
+        lambda1 = config['lambda1']
+        tol = config['tolerance']
+    if regMethod == 'ridge':
+        lambda2 = config['lambda2']
+    if regMethod == 'elasticNet':
+        lambda1 = config['lambda1']
+        lambda2 = config['lambda2']
+        tol = config['tolerance']
+
+    # discretize time points
     warmupTime_pts = int(warmupTime/dt)
     trainTime_pts = int(trainTime/dt)
     testTime_pts = int(testTime/dt)
@@ -90,22 +74,44 @@ def main():
     warmtrainTime_pts = warmupTime_pts + trainTime_pts
     totalTime_pts = warmupTime_pts + trainTime_pts + testTime_pts
     delayTime_pts = (k - 1) * s
-    # TO-DO: add check that num warmup points > (k-1)*s
+    
+    # check necessary conditions for program to run
+    if plotTime > testTime:
+        raise ValueError("plotTime must be less than or equal to testTime")
+    if errorTime > testTime:
+        raise ValueError("errorTime must be less than or equal to testTime")
+    if warmupTime_pts <= (k-1)*s:
+        raise ValueError("required that WarmupTime_pts > (k-1)*s, increase warmupTime")
 
-    # data generation parameters
-    numIntegrator = args.numIntegrator
-    system = args.system
+    # output parameter values
+    print('-----------------------------')
+    print('time parameters')
+    print('dt: ', dt)
+    print('startTime: ', t0)
+    print('warmupTime: ', warmupTime)
+    print('trainTime: ', trainTime)
+    print('testTime: ', testTime)
+    print('plotTime: ', plotTime)
+    print('errorTime: ', errorTime)
+    print('data generation parameters')
+    print('system: ', system)
+    print('numerical_integrator: ', numIntegrator)
+    print('feature vector parameters') 
+    print('k: ', k)
+    print('s: ', s)
+    print('p: ', p)
+    print('regression parameters')
+    print('regression_method: ', regMethod)
+    if regMethod == 'lasso':
+        print('lambda1: ', lambda1 )
+        print('tolerance: ', tol)
+    if regMethod == 'ridge':
+        print('lambda2: ', lambda2)
+    if regMethod == 'elasticNet':
+        print('lambda1: ', lambda1)
+        print('lambda2: ', lambda2)
+        print('tolerance: ', tol)
 
-    # regression parameters
-
-    #initialize all, update from parser for use
-    regMethod = None
-    lambda1 = None
-    lambda2 = None
-    tol = None
-
-    regMethod = 'ridge'
-    lambda2 = 1.5e-6
 
     # generate data
     print('-----------------------------')
