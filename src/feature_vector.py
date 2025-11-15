@@ -14,7 +14,7 @@ class FeatureVector:
     def __init__(self, dim, k, s, p):
         self.d = dim
         self.k = k
-        self.s = s  # TO-DO: s is currently not implemented
+        self.s = s
         self.p = p
 
         self.dlin = self.d * self.k
@@ -29,7 +29,8 @@ class FeatureVector:
         linear_featureVector = np.zeros((self.dlin, N))
         for delay in range(self.k):
             for j in range(delay, N):
-                linear_featureVector[self.d * delay:self.d * (delay + 1), j] = data[:, j - delay]  # noqa: E501
+                #linear_featureVector[self.d * delay:self.d * (delay + 1), j] = data[:, j - delay]  # noqa: E501 (no s case)
+                linear_featureVector[self.d * delay:self.d * (delay + 1), j] = data[:, j - ((self.s)*(delay)) ]  # noqa: E501
         return linear_featureVector
 
     def construct_nonlinear(self, N, linear_featureVector):

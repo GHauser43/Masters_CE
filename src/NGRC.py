@@ -53,7 +53,7 @@ def main():
     lambda2 = None
     tol = None
     # gets necessary parameters for given regression method
-    # may need to update if add more regression emthods
+    # may need to update if add more regression methods
     if regMethod == 'lasso':
         lambda1 = config['lambda1']
         tol = config['tolerance']
@@ -143,20 +143,27 @@ def main():
     timeHistory_train = dg.split_data(timeHistory,
                                       warmupTime_pts - delayTime_pts-1,
                                       warmtrainTime_pts-1)
-    #trajectoryHistory_test = dg.split_data(trajectoryHistory,
-    #                                       warmtrainTime_pts,
-    #                                       totalTime_pts)
-    #timeHistory_test = dg.split_data(timeHistory,
-    #                                 warmtrainTime_pts,
-    #                                 totalTime_pts)
+    trajectoryHistory_test = dg.split_data(trajectoryHistory,
+                                           warmtrainTime_pts,
+                                           totalTime_pts)
+    timeHistory_test = dg.split_data(timeHistory,
+                                     warmtrainTime_pts,
+                                     totalTime_pts)
+    
+    ### testing (temp)
+    print(timeHistory)
+    print('----------------------')
+    print(timeHistory_train)
+    print('----------------------')
+    print(timeHistory_test)
+
     print('data generation - finished')
 
     # Construct feature vector
     print('-----------------------------')
     print('feature vector construction - started')
     # create instance of feature vector class
-    featureVector = fv.FeatureVector(dim, k, s, p)
-    # construct feature vector for training data
+    featureVector = fv.FeatureVector(dim, k, s, p) # construct feature vector for training data
     featureVector_train = featureVector.construct_featureVector(trajectoryHistory_train)  # noqa: E501
     print('feature vector construction - finished')
 
@@ -173,8 +180,9 @@ def main():
                                                lambda1,
                                                lambda2,
                                                tol)
-
-    # TO-DO: add regression grid search option
+    print('coefficient_values:')
+    print(coefficient_values) 
+    # TO-DO: add regression grid search option?
     print('preform regression - finished')
 
 
