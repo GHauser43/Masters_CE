@@ -250,3 +250,29 @@ def split_data(array,
         result = array[:, time_point1:time_point2]
 
     return result
+
+
+def train_test_data_split(trajectoryHistory,
+                          timeHistory,
+                          warmupTime_pts,
+                          warmtrainTime_pts,
+                          delayTime_pts,
+                          totalTime_pts):
+    # specific function used to split up trajectory and time data
+    # into training and testing blocks
+
+    trajectoryHistory_train = split_data(trajectoryHistory,
+                                            warmupTime_pts - delayTime_pts-1,
+                                            warmtrainTime_pts-1)
+    timeHistory_train = split_data(timeHistory,
+                                      warmupTime_pts - delayTime_pts-1,
+                                      warmtrainTime_pts-1)
+    trajectoryHistory_test = split_data(trajectoryHistory,
+                                           warmtrainTime_pts,
+                                           totalTime_pts)
+    timeHistory_test = split_data(timeHistory,
+                                     warmtrainTime_pts,
+                                     totalTime_pts)
+
+    return trajectoryHistory_train, timeHistory_train, trajectoryHistory_test, timeHistory_test  # noqa: E501
+

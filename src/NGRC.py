@@ -137,19 +137,14 @@ def main():
                                                            dt,
                                                            totalTime_pts)
     # splits data into training and testing blocks
-    trajectoryHistory_train = dg.split_data(trajectoryHistory,
-                                            warmupTime_pts - delayTime_pts-1,
-                                            warmtrainTime_pts-1)
-    timeHistory_train = dg.split_data(timeHistory,
-                                      warmupTime_pts - delayTime_pts-1,
-                                      warmtrainTime_pts-1)
-    trajectoryHistory_test = dg.split_data(trajectoryHistory,
-                                           warmtrainTime_pts,
-                                           totalTime_pts)
-    timeHistory_test = dg.split_data(timeHistory,
-                                     warmtrainTime_pts,
-                                     totalTime_pts)
-    
+    trajectoryHistory_train, timeHistory_train, trajectoryHistory_test, timeHistory_test = dg.train_test_data_split(trajectoryHistory,  # noqa: E501
+                          timeHistory,
+                          warmupTime_pts,
+                          warmtrainTime_pts,
+                          delayTime_pts,
+                          totalTime_pts)
+
+ 
     ### testing (temp)
     print(timeHistory)
     print('----------------------')
