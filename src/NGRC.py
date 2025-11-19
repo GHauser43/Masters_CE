@@ -5,6 +5,7 @@ import yaml
 import data_generation as dg
 import feature_vector as fv
 import regression_methods as rm
+import make_prediction as mp
 
 
 # input paramaters
@@ -137,6 +138,9 @@ def main():
                                                            dt,
                                                            totalTime_pts)
 
+    # variance in generated data, used later for error calculations
+    data_variance = np.var(trajectoryHistory)
+    
     # splits data into training and testing blocks
     trajectoryHistory_train, timeHistory_train, trajectoryHistory_test, timeHistory_test = dg.train_test_data_split(trajectoryHistory,  # noqa: E501
                           timeHistory,
@@ -174,13 +178,26 @@ def main():
     # TO-DO: add regression grid search option?
     print('preform regression - finished')
 
+    # make one prediction step to test training fit accuracy
+    print('-----------------------------')
+    print('calculate training fit accuracy - started')
+    
+    prediction_test = mp.prediction_step(trajectoryHistory_train[:,1:-2],
+                                         featureVector_train,
+                                         coefficient_values)
+   
+    difference = prediction_test-trajectoryHistory_train[:,2:-1] 
+    NRMSE_train = np.sqrt(np.mean(difference**2)/data_variance)
+    print(f'training NRMSE:  {NRMSE_train:.4e}' )
+
+    print('calculate training fit accuracy - finished')
+
+
+
 
     # TO-DO: Prediction
     print('-----------------------------')
     print('calculate prediction - started')
-
-
-
 
     print('calculate prediction - finished')
     # TO-DO: Error and plotting
