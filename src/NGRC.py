@@ -136,6 +136,13 @@ def main():
                                                            t0,
                                                            dt,
                                                            totalTime_pts)
+    # TEMP
+    trajectoryHistory = np.array([[0.,1.,2.,3.,4.,5.,6.,7.,8.,9.,10.,11.],[-0.,-1.,-2.,-3.,-4.,-5.,-6.,-7.,-8.,-9.,-10.,-11.]])
+
+    timeHistory = np.array([0.,1.,2.,3.,4.,5.,6.,7.,8.,9.,10.,11.])
+    dim = 2
+
+
     # splits data into training and testing blocks
     trajectoryHistory_train, timeHistory_train, trajectoryHistory_test, timeHistory_test = dg.train_test_data_split(trajectoryHistory,  # noqa: E501
                           timeHistory,
@@ -143,15 +150,6 @@ def main():
                           warmtrainTime_pts,
                           delayTime_pts,
                           totalTime_pts)
-
- 
-    ### testing (temp)
-    print(timeHistory)
-    print('----------------------')
-    print(timeHistory_train)
-    print('----------------------')
-    print(timeHistory_test)
-
     print('data generation - finished')
 
     # Construct feature vector
@@ -159,14 +157,16 @@ def main():
     print('feature vector construction - started')
     # create instance of feature vector class
     featureVector = fv.FeatureVector(dim, k, s, p) # construct feature vector for training data
-    featureVector_train = featureVector.construct_featureVector(trajectoryHistory_train)  # noqa: E501
+
+    featureVector_train = featureVector.construct_featureVector(trajectoryHistory_train[:,:-2])  # noqa: E501
     print('feature vector construction - finished')
 
     # Preform regression
     print('-----------------------------')
     print('preform regression - started')
     # creates target output for change in dynamics over one time step
-    target = dg.split_data(trajectoryHistory, warmupTime_pts, warmtrainTime_pts) - dg.split_data(trajectoryHistory, warmupTime_pts-1, warmtrainTime_pts-1)  # noqa: E501
+    target = trajectoryHistory_train[:,2:-1]-trajectoryHistory_train[:,1:-2]
+
     # perform regression to get coefficient_values
     # that maps featureVector to target
     coefficient_values = rm.perform_regression(featureVector_train,
