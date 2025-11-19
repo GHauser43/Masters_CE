@@ -136,12 +136,6 @@ def main():
                                                            t0,
                                                            dt,
                                                            totalTime_pts)
-    # TEMP
-    trajectoryHistory = np.array([[0.,1.,2.,3.,4.,5.,6.,7.,8.,9.,10.,11.],[-0.,-1.,-2.,-3.,-4.,-5.,-6.,-7.,-8.,-9.,-10.,-11.]])
-
-    timeHistory = np.array([0.,1.,2.,3.,4.,5.,6.,7.,8.,9.,10.,11.])
-    dim = 2
-
 
     # splits data into training and testing blocks
     trajectoryHistory_train, timeHistory_train, trajectoryHistory_test, timeHistory_test = dg.train_test_data_split(trajectoryHistory,  # noqa: E501
