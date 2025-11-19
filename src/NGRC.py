@@ -15,10 +15,10 @@ def parse_args():
 def main():
     print('-----------------------------')
     print("Starting NGRC code")
-    
+
     # TO-DO: add checks for parser arguments on assignment
     # TO-DO: make config file templates
-    
+
     # loads config file
     parser = argparse.ArgumentParser()
     parser.add_argument('--config', type=str, required=True)
@@ -36,7 +36,7 @@ def main():
     testTime = config['testTime']
     plotTime = config['plotTime']
     errorTime = config['errorTime']
-    
+
     # data generation parameters
     system = config['system']
     numIntegrator = config['numerical_integrator']
@@ -53,7 +53,7 @@ def main():
     lambda2 = None
     tol = None
     # gets necessary parameters for given regression method
-    # may need to update if add more regression emthods
+    # may need to update if add more regression methods
     if regMethod == 'lasso':
         lambda1 = config['lambda1']
         tol = config['tolerance']
@@ -73,7 +73,7 @@ def main():
     warmtrainTime_pts = warmupTime_pts + trainTime_pts
     totalTime_pts = warmupTime_pts + trainTime_pts + testTime_pts
     delayTime_pts = (k - 1) * s
-    
+
     # check necessary conditions for program to run
     # time values are logical
     if plotTime > testTime:
@@ -81,7 +81,7 @@ def main():
     if errorTime > testTime:
         raise ValueError("errorTime must be less than or equal to testTime")
     if warmupTime_pts <= (k-1)*s:
-        raise ValueError("required that WarmupTime_pts > (k-1)*s, increase warmupTime")
+        raise ValueError("required that WarmupTime_pts > (k-1)*s, increase warmupTime")  # noqa: E501
     # regression methods have needed varaibles
     if regMethod == 'lasso':
         if lambda1 is None:
@@ -98,7 +98,6 @@ def main():
             raise ValueError("lambda2 is required for elasticNet regression")
         if tol is None:
             raise ValueError("tol is required for elasticNet regression")
-    
 
     # output parameter values
     print('-----------------------------')
@@ -113,14 +112,14 @@ def main():
     print('data generation parameters')
     print('  system:               ', system)
     print('  numerical_integrator: ', numIntegrator)
-    print('feature vector parameters') 
+    print('feature vector parameters')
     print('  k: ', k)
     print('  s: ', s)
     print('  p: ', p)
     print('regression parameters')
     print('  regression_method: ', regMethod)
     if regMethod == 'lasso':
-        print('  lambda1:   ', lambda1 )
+        print('  lambda1:   ', lambda1)
         print('  tolerance: ', tol)
     if regMethod == 'ridge':
         print('  lambda2: ', lambda2)
@@ -128,7 +127,6 @@ def main():
         print('  lambda1:   ', lambda1)
         print('  lambda2:   ', lambda2)
         print('  tolerance: ', tol)
-
 
     # generate data
     print('-----------------------------')
@@ -138,47 +136,53 @@ def main():
                                                            t0,
                                                            dt,
                                                            totalTime_pts)
+
     # splits data into training and testing blocks
-    trajectoryHistory_train = dg.split_data(trajectoryHistory,
-                                            warmupTime_pts - delayTime_pts-1,
-                                            warmtrainTime_pts-1)
-    timeHistory_train = dg.split_data(timeHistory,
-                                      warmupTime_pts - delayTime_pts-1,
-                                      warmtrainTime_pts-1)
-    #trajectoryHistory_test = dg.split_data(trajectoryHistory,
-    #                                       warmtrainTime_pts,
-    #                                       totalTime_pts)
-    #timeHistory_test = dg.split_data(timeHistory,
-    #                                 warmtrainTime_pts,
-    #                                 totalTime_pts)
+    trajectoryHistory_train, timeHistory_train, trajectoryHistory_test, timeHistory_test = dg.train_test_data_split(trajectoryHistory,  # noqa: E501
+                          timeHistory,
+                          warmupTime_pts,
+                          warmtrainTime_pts,
+                          delayTime_pts,
+                          totalTime_pts)
     print('data generation - finished')
 
     # Construct feature vector
     print('-----------------------------')
     print('feature vector construction - started')
     # create instance of feature vector class
-    featureVector = fv.FeatureVector(dim, k, s, p)
-    # construct feature vector for training data
-    featureVector_train = featureVector.construct_featureVector(trajectoryHistory_train)  # noqa: E501
+    featureVector = fv.FeatureVector(dim, k, s, p) # construct feature vector for training data
+
+    featureVector_train = featureVector.construct_featureVector(trajectoryHistory_train[:,:-2])  # noqa: E501
     print('feature vector construction - finished')
 
     # Preform regression
     print('-----------------------------')
     print('preform regression - started')
     # creates target output for change in dynamics over one time step
-    target = dg.split_data(trajectoryHistory,warmupTime_pts,warmtrainTime_pts) - dg.split_data(trajectoryHistory, warmupTime_pts-1, warmtrainTime_pts-1)
-    # perform regression to get coefficient_values that map featureVector to target
+    target = trajectoryHistory_train[:,2:-1]-trajectoryHistory_train[:,1:-2]
+
+    # perform regression to get coefficient_values
+    # that maps featureVector to target
     coefficient_values = rm.perform_regression(featureVector_train,
                                                target,
                                                regMethod,
                                                lambda1,
                                                lambda2,
                                                tol)
-    # TO-DO: add regression grid search option
+    print('coefficient_values:')
+    print(coefficient_values) 
+    # TO-DO: add regression grid search option?
     print('preform regression - finished')
-    
+
 
     # TO-DO: Prediction
+    print('-----------------------------')
+    print('calculate prediction - started')
+
+
+
+
+    print('calculate prediction - finished')
     # TO-DO: Error and plotting
 
     # print('-----------------------------')

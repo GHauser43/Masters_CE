@@ -4,11 +4,11 @@
 # time parameters 
 dt: 0.0025
 startTime: 0.0
-warmupTime: 2.0
-trainTime: 0.1
-testTime: 1.0
-plotTime: 1.0
-errorTime: 1.0
+warmupTime: 0.0075
+trainTime: 0.01
+testTime: 0.01
+plotTime: 0.01
+errorTime: 0.01
 
 
 
