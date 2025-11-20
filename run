@@ -1,12 +1,7 @@
 #!/bin/bash
 
-# for argument help on NGRC.py: ./run.sh help
-# to run NGRC.py: ./run.sh
+# to run NGRC.py: ./run
 
-if [ "$1" = "help" ]; then
-    python3 NGRC.py --help
-    exit 0
-fi
 echo "||"
 echo "|| running"
 echo "||"
