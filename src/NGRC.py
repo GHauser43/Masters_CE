@@ -1,13 +1,12 @@
 # import libraries
 import numpy as np
-import matplotlib.pyplot as plt
 import argparse
 import yaml
 import data_generation as dg
 import feature_vector as fv
 import regression_methods as rm
 import make_prediction as mp
-
+import plot
 
 # input paramaters
 def parse_args():
@@ -219,12 +218,23 @@ def main():
     
     print('calculate prediction error - finished')
     
+    # plotting
+    print('-----------------------------')
+    print('generate plot - started')
 
-    # TO-DO: Error and plotting
+    plot.make_plot(trajectoryHistory,
+                   timeHistory,
+                   prediction_train,
+                   timeHistory_train[2:-1],
+                   prediction,
+                   timeHistory_test,
+                   dim)
 
-    # print('-----------------------------')
-    # print("Finished NGRC code")
-    # print('-----------------------------')
+    print('generate plot - finished')
+
+    print('-----------------------------')
+    print("Finished NGRC code")
+    print('-----------------------------')
 
 
 if __name__ == "__main__":
