@@ -238,11 +238,12 @@ def generate_data(numIntegrator, system, t0, dt, totalTime_pts):
 def split_data(array,
                time_point1,
                time_point2):
-    # splits data - returns data in array between index time_point1 and time_point2
+    # splits data - returns data in array between
+    #               index time_point1 and time_point2
     # inputs:
     #   array - numpy array of shape (dim, # time points)
-    #   time_point1 - index of first time point 
-    #   time_point2 - index of second time point 
+    #   time_point1 - index of first time point
+    #   time_point2 - index of second time point
 
     if array.ndim == 1:
         result = array[time_point1:time_point2]
@@ -261,7 +262,7 @@ def train_test_data_split(trajectoryHistory,
     # specific function used to split up trajectory and time data
     # into training and testing blocks
     # markdown example for split of time data:
-    # paramater entries are 
+    # paramater entries are
     # time data = [0 1 2 3 4 5 6 7 8 9 10 11]
     # warmupTime_pts = 3
     # warmtrainTime_pts = 7
@@ -286,4 +287,3 @@ def train_test_data_split(trajectoryHistory,
                                   totalTime_pts + 1)
 
     return trajectoryHistory_train, timeHistory_train, trajectoryHistory_test, timeHistory_test  # noqa: E501
-

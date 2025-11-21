@@ -8,10 +8,6 @@ import regression_methods as rm
 import make_prediction as mp
 import plot
 
-# input paramaters
-def parse_args():
-    return 1
-
 
 def main():
     print('-----------------------------')
@@ -140,7 +136,7 @@ def main():
 
     # variance in generated data, used later for error calculations
     data_variance = np.var(trajectoryHistory)
-    
+
     # splits data into training and testing blocks
     trajectoryHistory_train, timeHistory_train, trajectoryHistory_test, timeHistory_test = dg.train_test_data_split(trajectoryHistory,  # noqa: E501
                           timeHistory,
@@ -154,16 +150,17 @@ def main():
     print('-----------------------------')
     print('feature vector construction - started')
     # create instance of feature vector class
-    featureVector = fv.FeatureVector(dim, k, s, p) # construct feature vector for training data
+    # construct feature vector for training data
+    featureVector = fv.FeatureVector(dim, k, s, p)
 
-    featureVector_train = featureVector.construct_featureVector(trajectoryHistory_train[:,:-2])  # noqa: E501
+    featureVector_train = featureVector.construct_featureVector(trajectoryHistory_train[:, :-2])  # noqa: E501
     print('feature vector construction - finished')
 
     # Preform regression
     print('-----------------------------')
     print('preform regression - started')
     # creates target output for change in dynamics over one time step
-    target = trajectoryHistory_train[:,2:-1]-trajectoryHistory_train[:,1:-2]
+    target = trajectoryHistory_train[:, 2:-1]-trajectoryHistory_train[:, 1:-2]
 
     # perform regression to get coefficient_values
     # that maps featureVector to target
@@ -174,21 +171,21 @@ def main():
                                                lambda2,
                                                tol)
     print('coefficient_values:')
-    print(coefficient_values) 
+    print(coefficient_values)
     # TO-DO: add regression grid search option?
     print('preform regression - finished')
 
     # make one prediction step to test training fit accuracy
     print('-----------------------------')
     print('calculate training fit error - started')
-    
-    prediction_train = mp.prediction_step(trajectoryHistory_train[:,1:-2],
-                                         featureVector_train,
-                                         coefficient_values)
-   
-    difference_train = prediction_train-trajectoryHistory_train[:,2:-1] 
+
+    prediction_train = mp.prediction_step(trajectoryHistory_train[:, 1:-2],
+                                          featureVector_train,
+                                          coefficient_values)
+
+    difference_train = prediction_train - trajectoryHistory_train[:, 2:-1]
     NRMSE_train = np.sqrt(np.mean(difference_train**2)/data_variance)
-    print(f'training NRMSE:  {NRMSE_train:.4e}' )
+    print(f'training NRMSE:  {NRMSE_train:.4e}')
 
     print('calculate training fit error - finished')
 
@@ -197,14 +194,14 @@ def main():
     print('calculate prediction - started')
 
     # initialize storage for prediction
-    prediction = np.zeros([dim,testTime_pts + delayTime_pts + 1])
+    prediction = np.zeros([dim, testTime_pts + delayTime_pts + 1])
     # copy over starting value with delay
-    prediction[:,0:delayTime_pts + 1] = trajectoryHistory_train[:,-delayTime_pts - 1:]
+    prediction[:, 0:delayTime_pts + 1] = trajectoryHistory_train[:, -delayTime_pts - 1:]  # noqa: E501
     # generates full prediction, removes initial delay taps
     prediction = mp.generate_prediction(prediction,
                                         delayTime_pts,
                                         featureVector,
-                                        coefficient_values)[:,delayTime_pts:]
+                                        coefficient_values)[:, delayTime_pts:]
 
     print('calculate prediction - finished')
 
@@ -212,12 +209,12 @@ def main():
     print('calculate prediction error - started')
 
     # calculates error for generated predictions, first column in array is IC
-    difference_test = prediction[:,1:errorTime_pts]-trajectoryHistory_test[:,1:errorTime_pts]
+    difference_test = prediction[:, 1:errorTime_pts] - trajectoryHistory_test[:, 1:errorTime_pts]  # noqa: E501
     NRMSE_test = np.sqrt(np.mean(difference_test**2)/data_variance)
-    print(f'testing NRMSE:  {NRMSE_test:.4e}' )
-    
+    print(f'testing NRMSE:  {NRMSE_test:.4e}')
+
     print('calculate prediction error - finished')
-    
+
     # plotting
     print('-----------------------------')
     print('generate plot - started')
