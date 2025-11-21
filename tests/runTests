@@ -1,0 +1,16 @@
+#!/bin/bash
+
+# executable used to run tests
+# exectue from root directory with ./tests/runTests
+
+# runs linter on python files
+echo "|| run linter"
+pycodestyle src/*.py
+pycodestyle tests/unit_tests/*.py
+
+echo "|| test_data_generation.py"
+python3 tests/unit_tests/test_data_generation.py
+
+echo "|| test_feature_vector.py"
+python3 tests/unit_tests/test_feature_vector.py
+
