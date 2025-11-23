@@ -2,6 +2,7 @@
 import numpy as np
 import argparse
 import yaml
+import time
 import data_generation as dg
 import feature_vector as fv
 import regression_methods as rm
@@ -12,6 +13,8 @@ import plot
 def main():
     print('-----------------------------')
     print("Starting NGRC code")
+
+    start_time = time.perf_counter()
 
     # TO-DO: add checks for parser arguments on assignment
     # TO-DO: make config file templates
@@ -49,17 +52,20 @@ def main():
     lambda1 = None
     lambda2 = None
     tol = None
+    maxIter = None
     # gets necessary parameters for given regression method
     # may need to update if add more regression methods
     if regMethod == 'lasso':
         lambda1 = config['lambda1']
         tol = config['tolerance']
+        maxIter = config['maxIterations']
     if regMethod == 'ridge':
         lambda2 = config['lambda2']
     if regMethod == 'elasticNet':
         lambda1 = config['lambda1']
         lambda2 = config['lambda2']
         tol = config['tolerance']
+        maxIter = config['maxIterations']
 
     # discretize time points
     warmupTime_pts = int(warmupTime/dt)
@@ -84,7 +90,9 @@ def main():
         if lambda1 is None:
             raise ValueError("lambda1 is required for lasso regression")
         if tol is None:
-            raise ValueError("tol is required for lasso regression")
+            raise ValueError("tolerance is required for lasso regression")
+        if maxIter is None:
+            raise ValueError("maxIterations is required for lasso regression")
     if regMethod == 'ridge':
         if lambda2 is None:
             raise ValueError("lambda2 is required for ridge regression")
@@ -94,7 +102,9 @@ def main():
         if lambda2 is None:
             raise ValueError("lambda2 is required for elasticNet regression")
         if tol is None:
-            raise ValueError("tol is required for elasticNet regression")
+            raise ValueError("tolerance is required for elasticNet regression")
+        if maxIter is None:
+            raise ValueError("maxIterations is required for elasticNet regression")  # noqa: E501
 
     # output parameter values
     print('-----------------------------')
@@ -169,7 +179,8 @@ def main():
                                                regMethod,
                                                lambda1,
                                                lambda2,
-                                               tol)
+                                               tol,
+                                               maxIter)
     print('coefficient_values:')
     print(coefficient_values)
     # TO-DO: add regression grid search option?
@@ -229,8 +240,11 @@ def main():
 
     print('generate plot - finished')
 
+    end_time = time.perf_counter()
+    elapsed_time = end_time - start_time
     print('-----------------------------')
     print("Finished NGRC code")
+    print(f"Elapsed time: {elapsed_time:.4f} seconds")
     print('-----------------------------')
 
 

@@ -4,11 +4,11 @@
 # time parameters 
 dt: 0.0025
 startTime: 0.0
-warmupTime: 0.0075
-trainTime: 0.01
-testTime: 0.01
+warmupTime: 2.0075
+trainTime: 1.01
+testTime: 2.01
 plotTime: 0.01
-errorTime: 0.01
+errorTime: 1.01
 
 
 
@@ -25,7 +25,8 @@ p: 2
 
 # regression parameters
 regression_method: 'ridge'
-lambda1:
+lambda1: 1.5e-6
 lambda2: 1.5e-6
-tolerance:
+tolerance: 1.0e-6
+maxIterations: 100000000
 
