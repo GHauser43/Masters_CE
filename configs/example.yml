@@ -25,10 +25,7 @@ p: 2
 
 # regression parameters
 regression_method: 'ridge'
-lambda1: 1.5e-6
 lambda2: 1.5e-6
-tolerance: 1.0e-6
-maxIterations: 100000000
 
 # plot parameters
 plotPath: 'results/example.png'

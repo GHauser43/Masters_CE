@@ -1,0 +1,13 @@
+#!/bin/bash
+
+# example run
+
+echo "||"
+echo "|| running"
+echo "||"
+
+python3 src/NGRC.py --config configs/example.yml > results/example.txt
+
+echo "||"
+echo "|| finished"
+echo "||"
