@@ -1,0 +1,13 @@
+#!/bin/bash
+
+# run ./scripts/run from root directory
+
+echo "||"
+echo "|| running"
+echo "||"
+
+python3 src/NGRC.py --config configs/basic.yml > results/output.txt
+
+echo "||"
+echo "|| finished"
+echo "||"

@@ -66,6 +66,8 @@ def main():
         lambda2 = config['lambda2']
         tol = config['tolerance']
         maxIter = config['maxIterations']
+    # plot parameters
+    plotPath = config['plotPath']
 
     # discretize time points
     warmupTime_pts = int(warmupTime/dt)
@@ -236,7 +238,8 @@ def main():
                    timeHistory_train[2:-1],
                    prediction,
                    timeHistory_test,
-                   dim)
+                   dim,
+                   plotPath)
 
     print('generate plot - finished')
 
