@@ -7,7 +7,6 @@ startTime: 0.0
 warmupTime: 2.0
 trainTime: 1.0
 testTime: 2.0
-plotTime: 0.0
 errorTime: 1.0
 
 

@@ -7,7 +7,6 @@ time parameters
   warmupTime:  2.0
   trainTime:   1.0
   testTime:    2.0
-  plotTime:    0.0
   errorTime:   1.0
 data generation parameters
   system:                Lorenz_63
@@ -69,5 +68,5 @@ plot saved to:  results/example.png
 generate plot - finished
 -----------------------------
 Finished NGRC code
-Elapsed time: 0.2154 seconds
+Elapsed time (sec): 0.1423
 -----------------------------
