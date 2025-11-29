@@ -2,6 +2,7 @@ import matplotlib
 import matplotlib.pyplot as plt
 matplotlib.use('Agg')
 
+
 def make_plot(trajectoryHistory,
               timeHistory,
               prediction_train,

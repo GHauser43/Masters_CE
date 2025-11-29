@@ -21,7 +21,7 @@ def Lasso_regularization(featureVector,
     lasso.fit(X_data, y_data)
     # extract coefficient values from lasso object
     coefficient_values = np.array(lasso.coef_)
-    
+
     iterations_per_variable = lasso.n_iter_
     if maxIter in iterations_per_variable:
         print('convergence met: False')
