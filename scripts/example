@@ -1,12 +1,12 @@
 #!/bin/bash
 
-# to run NGRC.py: ./run
+# example run
 
 echo "||"
 echo "|| running"
 echo "||"
 
-python3 src/NGRC.py --config configs/basic.yml > output.txt
+python3 src/NGRC.py --config configs/example.yml > results/example.txt
 
 echo "||"
 echo "|| finished"

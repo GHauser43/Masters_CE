@@ -22,6 +22,12 @@ def Lasso_regularization(featureVector,
     # extract coefficient values from lasso object
     coefficient_values = np.array(lasso.coef_)
 
+    iterations_per_variable = lasso.n_iter_
+    if maxIter in iterations_per_variable:
+        print('convergence met: False')
+    else:
+        print('convergence met: True')
+
     return coefficient_values
 
 
@@ -57,6 +63,12 @@ def elasticNet_regularization(featureVector,
     elasticNet.fit(X_data, y_data)
     # extract coefficient values from elasticNet object
     coefficient_values = np.array(elasticNet.coef_)
+
+    iterations_per_variable = elasticNet.n_iter_
+    if maxIter in iterations_per_variable:
+        print('convergence met: False')
+    else:
+        print('convergence met: True')
 
     return coefficient_values
 

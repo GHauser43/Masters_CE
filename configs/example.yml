@@ -9,22 +9,23 @@ trainTime: 1.0
 testTime: 2.0
 errorTime: 1.0
 
+
+
 # data generation parameters
 system: 'Lorenz_63'
 numerical_integrator: 'rk4'
+
 
 # feature vector parameters
 k: 2
 s: 1
 p: 2
 
+
 # regression parameters
-regression_method: 'lasso'
-lambda1: 1.5e-6
+regression_method: 'ridge'
 lambda2: 1.5e-6
-tolerance: 1.0e-6
-maxIterations: 200000000
 
 # plot parameters
-plotPath: 'results/plot.png'
+plotPath: 'results/example.png'
 

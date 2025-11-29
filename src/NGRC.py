@@ -12,7 +12,7 @@ import plot
 
 def main():
     print('-----------------------------')
-    print("Starting NGRC code")
+    print('Starting NGRC code')
 
     start_time = time.perf_counter()
 
@@ -34,7 +34,6 @@ def main():
     warmupTime = config['warmupTime']
     trainTime = config['trainTime']
     testTime = config['testTime']
-    plotTime = config['plotTime']
     errorTime = config['errorTime']
 
     # data generation parameters
@@ -66,12 +65,13 @@ def main():
         lambda2 = config['lambda2']
         tol = config['tolerance']
         maxIter = config['maxIterations']
+    # plot parameters
+    plotPath = config['plotPath']
 
     # discretize time points
     warmupTime_pts = int(warmupTime/dt)
     trainTime_pts = int(trainTime/dt)
     testTime_pts = int(testTime/dt)
-    plotTime_pts = int(plotTime/dt)
     errorTime_pts = int(errorTime/dt)
     warmtrainTime_pts = warmupTime_pts + trainTime_pts
     totalTime_pts = warmupTime_pts + trainTime_pts + testTime_pts
@@ -79,8 +79,6 @@ def main():
 
     # check necessary conditions for program to run
     # time values are logical
-    if plotTime > testTime:
-        raise ValueError("plotTime must be less than or equal to testTime")
     if errorTime > testTime:
         raise ValueError("errorTime must be less than or equal to testTime")
     if warmupTime_pts <= (k-1)*s:
@@ -114,7 +112,6 @@ def main():
     print('  warmupTime: ', warmupTime)
     print('  trainTime:  ', trainTime)
     print('  testTime:   ', testTime)
-    print('  plotTime:   ', plotTime)
     print('  errorTime:  ', errorTime)
     print('data generation parameters')
     print('  system:               ', system)
@@ -236,15 +233,16 @@ def main():
                    timeHistory_train[2:-1],
                    prediction,
                    timeHistory_test,
-                   dim)
+                   dim,
+                   plotPath)
 
     print('generate plot - finished')
 
     end_time = time.perf_counter()
     elapsed_time = end_time - start_time
     print('-----------------------------')
-    print("Finished NGRC code")
-    print(f"Elapsed time: {elapsed_time:.4f} seconds")
+    print('Finished NGRC code')
+    print(f'Elapsed time (sec):  {elapsed_time:.4f}')
     print('-----------------------------')
 
 

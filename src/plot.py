@@ -1,4 +1,6 @@
+import matplotlib
 import matplotlib.pyplot as plt
+matplotlib.use('Agg')
 
 
 def make_plot(trajectoryHistory,
@@ -8,7 +10,7 @@ def make_plot(trajectoryHistory,
               prediction,
               timeHistory_test,
               dim,
-              plot_path=None):
+              plotPath):
 
     fig, axes = plt.subplots(nrows=dim,
                              ncols=1,
@@ -41,4 +43,5 @@ def make_plot(trajectoryHistory,
 
     fig.subplots_adjust(right=0.85)
 
-    plt.savefig('result.png')
+    plt.savefig(plotPath)
+    print('plot saved to: ', plotPath)
