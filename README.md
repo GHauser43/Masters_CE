@@ -2,9 +2,9 @@
 Generalized Next Generation Reservoir Computing (NGRC)
 
 ## working documentation
-- Execute program with ./run from root directory
+- Execute program with ./scripts/run from root directory
 - Configuration files can be found in configs directory 
-- Program output can be found in output.txt located in root directory
+- Program results can be found in results/output.txt and results/plot.png
 - Additional dynamical systems can be added by modifying src/data\_generation.py file. Template can be found at top of file.
 
 ## NGRC overview
