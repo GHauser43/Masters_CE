@@ -7,7 +7,12 @@
 # creates .csv file to store results from runs with different parameter values
 
 # set directory for script results
-directory="results/ridge_1"
+directory="results/grid_search_example"
+# set temporary config file name
+configFile="temp.yml"
+# variable keep results True(0)/False(1)
+keepResults=0
+
 # remove directory, comment out if want to add tests to .csv file
 rm -r "${directory}"
 # creates directory if dosn't already exist
@@ -18,13 +23,10 @@ mkdir -p "${directory}/plots"
 # clones this script into directory, and names it 'script'
 cp "$0" ${directory}/script
 
-# variable keep results True(0)/False(1)
-keepResults=0
-
-# create temporary config file: temp.yml
+# create temporary config file:
 # make initial choices for simmulation
-touch configs/temp.yml
-cat <<EOF > configs/temp.yml
+touch configs/${configFile}
+cat <<EOF > configs/${configFile}
 # time parameters 
 dt: 0.0025
 startTime: 0.0
@@ -65,20 +67,20 @@ echo "system,numerical_integrator,k,s,p,regression_method,lambda1,lambda2,tolera
 
 # STRINGS:
 # for <for_param> in 'str1' 'str2' ... ; do
-# yq eval -i '.<yml_param> = "'"$<for_param>"'" | .<yml_param> style="single"' configs/temp.yml
+# yq eval -i '.<yml_param> = "'"$<for_param>"'" | .<yml_param> style="single"' configs/${configFile}
 
 # FLOATS/INTS:
 # for <for_param> in $(seq <start> <increment> <end>); do
-# yq eval -i '.<yml_param> = '"$<for_param>" configs/temp.yml
+# yq eval -i '.<yml_param> = '"$<for_param>" configs/${configFile}
 
 
 # loops over different parameters
 # updates parameters in temp.yml
 for system in 'Lorenz_63' 'Lorenz_9dim'; do
-yq eval -i '.system = "'"$system"'" | .system style="single"' configs/temp.yml
+yq eval -i '.system = "'"$system"'" | .system style="single"' configs/${configFile}
 
 for lambda2 in $(seq 0.0000001 0.0000002 0.000001); do
-yq eval -i '.lambda2 = '"$lambda2" configs/temp.yml
+yq eval -i '.lambda2 = '"$lambda2" configs/${configFile}
 
     echo $system
     echo $lambda2
@@ -87,23 +89,23 @@ yq eval -i '.lambda2 = '"$lambda2" configs/temp.yml
     outputFile=${directory}/outputs/output_${system}_${lambda2}.txt
     plotFile=${directory}/plots/plot_${system}_${lambda2}.png
     # updates plotPath in temp.yml
-    yq eval -i '.plotPath = "'"$plotFile"'" | .plotPath style="single"' configs/temp.yml
+    yq eval -i '.plotPath = "'"$plotFile"'" | .plotPath style="single"' configs/${configFile}
 
     # run NGRC code
-    python3 src/NGRC.py --config configs/temp.yml > ${outputFile}
+    python3 src/NGRC.py --config configs/${configFile} > ${outputFile}
 
     # extract current values from temp.yml
-    system=$(yq eval '.system' configs/temp.yml)
-    numerical_integrator=$(yq eval '.numerical_integrator' configs/temp.yml)
-    k=$(yq eval '.k' configs/temp.yml)
-    s=$(yq eval '.s' configs/temp.yml)
-    p=$(yq eval '.p' configs/temp.yml)
-    regression_method=$(yq eval '.regression_method' configs/temp.yml)
-    lambda1=$(yq eval '.lambda1' configs/temp.yml)
-    lambda2=$(yq eval '.lambda2' configs/temp.yml)
-    tolerance=$(yq eval '.tolerance' configs/temp.yml)
-    maxIterations=$(yq eval '.maxIterations' configs/temp.yml)
-    # <config_param>=$(yq eval '.<config_param>' configs/temp.yml)
+    system=$(yq eval '.system' configs/${configFile})
+    numerical_integrator=$(yq eval '.numerical_integrator' configs/${configFile})
+    k=$(yq eval '.k' configs/${configFile})
+    s=$(yq eval '.s' configs/${configFile})
+    p=$(yq eval '.p' configs/${configFile})
+    regression_method=$(yq eval '.regression_method' configs/${configFile})
+    lambda1=$(yq eval '.lambda1' configs/${configFile})
+    lambda2=$(yq eval '.lambda2' configs/${configFile})
+    tolerance=$(yq eval '.tolerance' configs/${configFile})
+    maxIterations=$(yq eval '.maxIterations' configs/${configFile})
+    # <config_param>=$(yq eval '.<config_param>' configs/${configFile})
 
     # get result values from $outputFile
     convergence=$(awk '/convergence met:/ {print $NF}' ${outputFile})
@@ -126,7 +128,7 @@ done
 done
 
 # delete temp.yml
-rm configs/temp.yml
+rm configs/${configFile}
 
 # if keepResults = False(1), remove these directories
 if [ "$keepResults" -eq 1 ]; then

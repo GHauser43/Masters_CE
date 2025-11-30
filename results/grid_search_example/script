@@ -1,0 +1,138 @@
+#!/bin/bash
+
+# run this script from root directory
+# runs simmulations to test for different parameter values
+# records results into directory defined below
+# this script clones itself into said directory to record config data
+# creates .csv file to store results from runs with different parameter values
+
+# set directory for script results
+directory="results/grid_search_example"
+# set temporary config file name
+configFile="temp.yml"
+# variable keep results True(0)/False(1)
+keepResults=0
+
+# remove directory, comment out if want to add tests to .csv file
+rm -r "${directory}"
+# creates directory if dosn't already exist
+mkdir -p "${directory}"
+mkdir -p "${directory}/outputs"
+mkdir -p "${directory}/plots"
+
+# clones this script into directory, and names it 'script'
+cp "$0" ${directory}/script
+
+# create temporary config file:
+# make initial choices for simmulation
+touch configs/${configFile}
+cat <<EOF > configs/${configFile}
+# time parameters 
+dt: 0.0025
+startTime: 0.0
+warmupTime: 2.0
+trainTime: 10.0
+testTime: 10.0
+errorTime: 1.0
+
+# data generation parameters
+system: 
+numerical_integrator: 'rk4'
+
+# feature vector parameters
+k: 2
+s: 1
+p: 2
+
+# regression parameters
+regression_method: 'ridge'
+lambda1:
+lambda2:
+tolerance:
+maxIterations:
+
+# plot parameters
+plotPath:
+
+EOF
+
+# data.csv stores data produced by script
+touch  "$directory/data.csv"
+# generate header
+echo "system,numerical_integrator,k,s,p,regression_method,lambda1,lambda2,tolerance,maxIterations,convergence,itrainNRMSE,testNRMSE,runTime" >> ${directory}/data.csv
+
+# LOOP TEMPLATES:
+# <yml_param> is value to update in temp.yml
+# let <for_param> = <yml_param> for ease of use
+
+# STRINGS:
+# for <for_param> in 'str1' 'str2' ... ; do
+# yq eval -i '.<yml_param> = "'"$<for_param>"'" | .<yml_param> style="single"' configs/${configFile}
+
+# FLOATS/INTS:
+# for <for_param> in $(seq <start> <increment> <end>); do
+# yq eval -i '.<yml_param> = '"$<for_param>" configs/${configFile}
+
+
+# loops over different parameters
+# updates parameters in temp.yml
+for system in 'Lorenz_63' 'Lorenz_9dim'; do
+yq eval -i '.system = "'"$system"'" | .system style="single"' configs/${configFile}
+
+for lambda2 in $(seq 0.0000001 0.0000002 0.000001); do
+yq eval -i '.lambda2 = '"$lambda2" configs/${configFile}
+
+    echo $system
+    echo $lambda2
+
+    # update output and plot file paths
+    outputFile=${directory}/outputs/output_${system}_${lambda2}.txt
+    plotFile=${directory}/plots/plot_${system}_${lambda2}.png
+    # updates plotPath in temp.yml
+    yq eval -i '.plotPath = "'"$plotFile"'" | .plotPath style="single"' configs/${configFile}
+
+    # run NGRC code
+    python3 src/NGRC.py --config configs/${configFile} > ${outputFile}
+
+    # extract current values from temp.yml
+    system=$(yq eval '.system' configs/${configFile})
+    numerical_integrator=$(yq eval '.numerical_integrator' configs/${configFile})
+    k=$(yq eval '.k' configs/${configFile})
+    s=$(yq eval '.s' configs/${configFile})
+    p=$(yq eval '.p' configs/${configFile})
+    regression_method=$(yq eval '.regression_method' configs/${configFile})
+    lambda1=$(yq eval '.lambda1' configs/${configFile})
+    lambda2=$(yq eval '.lambda2' configs/${configFile})
+    tolerance=$(yq eval '.tolerance' configs/${configFile})
+    maxIterations=$(yq eval '.maxIterations' configs/${configFile})
+    # <config_param>=$(yq eval '.<config_param>' configs/${configFile})
+
+    # get result values from $outputFile
+    convergence=$(awk '/convergence met:/ {print $NF}' ${outputFile})
+    trainNRMSE=$(awk '/training NRMSE:/ {print $NF}' ${outputFile})
+    testNRMSE=$(awk '/testing NRMSE:/ {print $NF}' ${outputFile})
+    runTime=$(awk '/Elapsed time \(sec\):/ {print $NF}' ${outputFile})
+    # <value>=$(awk '/<text_in_file>/ {print $NF}' ${outputFile})
+
+    # write to ${directory}/data.csv in csv format. puts 'NA' if variable is empty
+    echo "${system:-NA},${numerical_integrator:-NA},${k:-NA},${s:-NA},${p:-NA},${regression_method:-NA},${lambda1:-NA},${lambda2:-NA},${tolerance:-NA},${maxIterations:-NA},${convergence:-NA},${trainNRMSE:-NA},${testNRMSE:-NA},${runTime:-NA}" >> ${directory}/data.csv
+    # ${<variable>:-NA}
+
+    # if keepResults = False(1), remove results and plot files
+    if [ "$keepResults" -eq 1 ]; then
+        rm "${outputFile}"
+        rm "${plotFile}"
+    fi
+
+done
+done
+
+# delete temp.yml
+rm configs/${configFile}
+
+# if keepResults = False(1), remove these directories
+if [ "$keepResults" -eq 1 ]; then
+    rmdir "${directory}/outputs"
+    rmdir "${directory}/plots"
+fi
+

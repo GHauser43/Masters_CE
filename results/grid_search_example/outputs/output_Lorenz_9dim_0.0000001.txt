@@ -1,0 +1,65 @@
+-----------------------------
+Starting NGRC code
+-----------------------------
+time parameters
+  dt:          0.0025
+  startTime:   0.0
+  warmupTime:  2.0
+  trainTime:   10.0
+  testTime:    10.0
+  errorTime:   1.0
+data generation parameters
+  system:                Lorenz_9dim
+  numerical_integrator:  rk4
+feature vector parameters
+  k:  2
+  s:  1
+  p:  2
+regression parameters
+  regression_method:  ridge
+  lambda2:  1e-07
+-----------------------------
+data generation - started
+System dimension: 9
+Initial condition: [  0.96803247  -4.49827049  -1.56463134  -2.59560938  -0.95404047
+  -5.51041908   0.35826517 -14.78422783  -4.50578669]
+data generation - finished
+-----------------------------
+feature vector construction - started
+feature vector construction - finished
+-----------------------------
+preform regression - started
+coefficient_values:
+[[ 3.48381215e-06 -2.04473502e-03  8.12747712e-06 ... -9.08367178e-05
+  -1.36170727e-04  1.44916269e-04]
+ [ 5.68401257e-05  2.04189201e-05 -5.86792573e-04 ... -4.88151519e-05
+  -2.91626832e-05 -1.09523478e-04]
+ [ 7.03362960e-05  1.32577767e-05 -6.44768836e-06 ...  1.04133132e-04
+   1.28885743e-04 -5.32201379e-05]
+ ...
+ [-2.79064512e-04 -3.43073297e-02  2.13080766e-04 ...  8.30419591e-04
+   7.00013236e-04 -5.47496895e-04]
+ [ 1.79338497e-04  7.33984277e-05 -6.84273260e-05 ...  1.22126126e-03
+  -4.08225064e-04 -8.06465496e-04]
+ [-5.16633745e-05  2.07766474e-05 -3.47573910e-02 ... -6.19976564e-05
+   2.17354040e-04 -3.60891808e-04]]
+preform regression - finished
+-----------------------------
+calculate training fit error - started
+training NRMSE:  4.3514e-06
+calculate training fit error - finished
+-----------------------------
+calculate prediction - started
+calculate prediction - finished
+-----------------------------
+calculate prediction error - started
+testing NRMSE:  3.0201e-02
+calculate prediction error - finished
+-----------------------------
+generate plot - started
+plot saved to:  results/grid_search_example/plots/plot_Lorenz_9dim_0.0000001.png
+generate plot - finished
+-----------------------------
+Finished NGRC code
+Elapsed time (sec):  0.8886
+-----------------------------
