@@ -1,0 +1,11 @@
+system,numerical_integrator,k,s,p,regression_method,lambda1,lambda2,tolerance,maxIterations,convergence,itrainNRMSE,testNRMSE,runTime
+Lorenz_63,rk4,2,1,2,ridge,NA,0.0000001,NA,NA,NA,1.5229e-07,2.1500e-05,0.5652
+Lorenz_63,rk4,2,1,2,ridge,NA,0.0000003,NA,NA,NA,1.5228e-07,2.1096e-05,0.2836
+Lorenz_63,rk4,2,1,2,ridge,NA,0.0000005,NA,NA,NA,1.5228e-07,2.1103e-05,0.2635
+Lorenz_63,rk4,2,1,2,ridge,NA,0.0000007,NA,NA,NA,1.5228e-07,2.1981e-05,0.2608
+Lorenz_63,rk4,2,1,2,ridge,NA,0.0000009,NA,NA,NA,1.5230e-07,2.1143e-05,0.2922
+Lorenz_9dim,rk4,2,1,2,ridge,NA,0.0000001,NA,NA,NA,4.3514e-06,3.0201e-02,0.8886
+Lorenz_9dim,rk4,2,1,2,ridge,NA,0.0000003,NA,NA,NA,4.3598e-06,3.1702e-02,0.8708
+Lorenz_9dim,rk4,2,1,2,ridge,NA,0.0000005,NA,NA,NA,7.0405e-06,3.0286e-02,0.8826
+Lorenz_9dim,rk4,2,1,2,ridge,NA,0.0000007,NA,NA,NA,5.1977e-06,4.1087e-02,0.8970
+Lorenz_9dim,rk4,2,1,2,ridge,NA,0.0000009,NA,NA,NA,6.6979e-06,4.4245e-02,0.8862

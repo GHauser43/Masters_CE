@@ -1,0 +1,72 @@
+-----------------------------
+Starting NGRC code
+-----------------------------
+time parameters
+  dt:          0.0025
+  startTime:   0.0
+  warmupTime:  2.0
+  trainTime:   10.0
+  testTime:    10.0
+  errorTime:   1.0
+data generation parameters
+  system:                Lorenz_63
+  numerical_integrator:  rk4
+feature vector parameters
+  k:  2
+  s:  1
+  p:  2
+regression parameters
+  regression_method:  ridge
+  lambda2:  5e-07
+-----------------------------
+data generation - started
+System dimension: 3
+Initial condition: [17.67715816 12.93137919 43.91404334]
+data generation - finished
+-----------------------------
+feature vector construction - started
+feature vector construction - finished
+-----------------------------
+preform regression - started
+coefficient_values:
+[[ 1.02123474e-08 -1.10230039e-02  1.17535665e-02 -1.54610573e-09
+  -1.16098673e-02  1.25757084e-02 -3.81042328e-10 -9.98107376e-09
+   1.11911582e-07 -2.82205667e-05 -4.25563143e-09  1.12409634e-07
+  -3.32771583e-06 -1.78458867e-09 -3.52141590e-06 -1.14112090e-07
+   4.22978488e-08  2.93820069e-06  1.21973403e-07 -2.80859353e-05
+   2.50395111e-06 -2.05626842e-07  1.31755392e-08 -1.05917488e-07
+  -2.56516239e-06 -4.64351615e-08 -2.55113264e-06  8.39791028e-08]
+ [ 1.97853435e-06  3.36201683e-02  8.07921630e-04 -1.81065051e-07
+   3.44807488e-02 -1.57701902e-03 -1.98023568e-07  1.25246037e-07
+  -4.49914961e-07 -1.79348925e-03 -2.51363410e-08  4.42087135e-07
+   5.97925867e-04 -4.14911172e-06 -6.50939168e-04 -3.59853217e-07
+   9.16266609e-06  5.65344528e-04  2.06124719e-05 -1.84328264e-03
+   5.41579749e-04 -4.16094071e-05 -1.89327862e-07  5.49455039e-07
+   6.06815604e-04 -5.10162499e-06 -5.17726621e-04  2.10085273e-05]
+ [-8.98575185e-06 -1.11641616e-08  6.75356820e-08 -3.29909010e-03
+  -1.26896323e-08  5.36789027e-08 -3.32221994e-03  1.09737701e-05
+   1.77204624e-03  6.36441393e-07  5.47642444e-07 -5.77975444e-04
+  -1.64921261e-07 -1.66778835e-04  2.81787177e-06  1.81844186e-03
+   5.02520495e-04 -2.92716990e-06 -5.94455640e-04  1.76412251e-07
+  -3.19605555e-06  1.14810361e-03 -1.06180948e-05 -5.89652783e-04
+  -6.32981028e-07 -2.73744576e-04  3.28316310e-06 -5.53914186e-04]]
+preform regression - finished
+-----------------------------
+calculate training fit error - started
+training NRMSE:  1.5228e-07
+calculate training fit error - finished
+-----------------------------
+calculate prediction - started
+calculate prediction - finished
+-----------------------------
+calculate prediction error - started
+testing NRMSE:  2.1103e-05
+calculate prediction error - finished
+-----------------------------
+generate plot - started
+plot saved to:  results/grid_search_example/plots/plot_Lorenz_63_0.0000005.png
+generate plot - finished
+-----------------------------
+Finished NGRC code
+Elapsed time (sec):  0.2635
+-----------------------------
