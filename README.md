@@ -24,7 +24,10 @@ This program can use Ridge, Lasso, and Elastic Net regression methods
 
 ### Ridge
 
+$ \min_x $
+
 ### Lasso
 
 ### Elastic Net
 
+## Configuration File
