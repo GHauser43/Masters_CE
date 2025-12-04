@@ -23,18 +23,15 @@ Generalized Next Generation Reservoir Computing (NGRC)
 This program can use Ridge, Lasso, and Elastic Net regression methods
 
 ### Ridge
-
 ```math
 \min_{\beta} \{  || y-X \beta ||_2^2 + \lambda_2 || \beta ||_2^2  \}
 ```
 
 ### Lasso
-
 ```math
 \min_{\beta} \{  || y-X \beta ||_2^2 + \lambda_1 || \beta ||_1  \}
 ```
 ### Elastic Net
-
 ```math
 \min_{\beta} \{  || y-X \beta ||_2^2 + \lambda_1 || \beta ||_1 + \lambda_2 || \beta ||_2^2  \}
 ```
