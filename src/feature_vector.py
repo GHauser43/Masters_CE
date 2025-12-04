@@ -34,13 +34,49 @@ class FeatureVector:
         return linear_featureVector
 
     def construct_nonlinear(self, N, linear_featureVector):
-        # initialize storage
-        nonlinear_featureVector = np.zeros((self.dnonlin, N))
-        count = 0
-        for row in range(self.dlin):
-            for col in range(row, self.dlin):
-                nonlinear_featureVector[count, :] = linear_featureVector[row, :] * linear_featureVector[col, :]  # noqa: E501
-                count += 1
+        # gathers all the unique polynomials of power self.p and
+        #   populates the nonlinear_featureVector accordingly
+        # can handle p >= 9
+
+        # unique_keys keeps track of what unique polynomials
+        #   are in the featue vector. initialized with key values
+        #   from linear part
+        unique_keys = np.zeros(linear_featureVector.shape[0], dtype=np.int64)
+        # initialize with linear entries
+        for dim in range(0, linear_featureVector.shape[0]):
+            unique_keys[dim] = 10**((linear_featureVector.shape[0] - 1) - dim)
+        # unique_featureVector holds values associated with unique_key values
+        unique_featureVector = np.empty((0, N))  # initialize array
+        # have running feat vec and keys to record all (non unique) values
+        running_featureVector = linear_featureVector
+        running_keys = unique_keys
+
+        # iterates over the power (polynomial) being calculated
+        # value of power doesn't matter, just corrent number of iterations
+        for power in range(1, self.p):
+            # add_to_running records what data to add to running_featureVector
+            #   after each power loop
+            add_to_running = np.empty((0, N))
+            for row1_idx in range(linear_featureVector.shape[0]):
+                row1_key = unique_keys[row1_idx]
+                for row2_idx in range(running_featureVector.shape[0]):
+                    row2_key = running_keys[row2_idx]
+
+                    new_key = row1_key + row2_key
+                    new_row = linear_featureVector[row1_idx, :] * running_featureVector[row2_idx, :]  # noqa: E501
+                    running_keys = np.append(running_keys, new_key)
+                    add_to_running = np.vstack((add_to_running, new_row))
+
+                    if new_key not in unique_keys:
+                        unique_keys = np.append(unique_keys, new_key)
+                        unique_featureVector = np.vstack((
+                                               unique_featureVector,
+                                               new_row))
+
+            running_featureVector = np.vstack((running_featureVector,
+                                               add_to_running))
+
+        nonlinear_featureVector = unique_featureVector
         return nonlinear_featureVector
 
     def construct_featureVector(self, data):
