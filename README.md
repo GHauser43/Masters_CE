@@ -35,4 +35,7 @@ This program can use Ridge, Lasso, and Elastic Net regression methods
 ```
 ### Elastic Net
 
+```math
+\min_{\beta} \{  || y-X \beta ||_2^2 + \lambda_1 || \beta ||_1 + \lambda_2 || \beta ||_2^2  \}
+```
 ## Configuration File
