@@ -8,14 +8,18 @@ Generalized Next Generation Reservoir Computing (NGRC)
 - Additional dynamical systems can be added by modifying src/data\_generation.py file. Template can be found at top of file.
 
 ## NGRC overview
-- data generation
-- feature vector construction
-- perform regression
-- calculate training fit NRMSE
-- make prediction
-- calculate prediction NRMSE
+1. data generation
+2. feature vector construction
+3. perform regression
+4. calculate training fit NRMSE
+5. make prediction
+6. calculate prediction NRMSE
 
-## Regression methods
+## 1. Data Generation
+
+## 2. Feature Vector Construction
+
+## 3. Regression methods
 This program can use Ridge, Lasso, and Elastic Net regression methods
 
 ### Ridge
