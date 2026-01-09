@@ -18,8 +18,6 @@ class FeatureVector:
         self.p = p
 
         self.dlin = self.d * self.k
-        self.dnonlin = int(self.dlin * (self.dlin + 1) / 2)
-        self.dtot = 1 + self.dlin + self.dnonlin
 
     def construct_constant(self, N):
         return np.ones((1, N))
