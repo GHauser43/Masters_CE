@@ -16,8 +16,13 @@ Generalized Next Generation Reservoir Computing (NGRC)
 6. calculate prediction NRMSE
 
 ## 1. Data Generation
+- self implemented runge-kutta-4
+- scipy solve\_ivp solvers
+- TODO: upload data csv file
 
 ## 2. Feature Vector Construction
+- construct feature vector with parameters s, k, p.
+- p is plynomial power of feature vector ($p \leq 9$)
 
 ## 3. Regression methods
 This program can use Ridge, Lasso, and Elastic Net regression methods
