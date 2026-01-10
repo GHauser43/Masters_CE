@@ -3,6 +3,7 @@ import numpy as np
 import argparse
 import yaml
 import time
+# link code
 import data_generation as dg
 import feature_vector as fv
 import regression_methods as rm
@@ -44,6 +45,10 @@ def main():
     k = config['k']
     s = config['s']
     p = config['p']
+    # check that p <= 9
+    # due to data structure limitation in FeatureVector construction
+    if p > 9:
+        raise ValueError('p must be <= 9 (code data structure limitation)')
 
     # regression parameters
     regMethod = config['regression_method']
@@ -141,6 +146,8 @@ def main():
                                                            dt,
                                                            totalTime_pts)
 
+    print('trajectoryHistory:', trajectoryHistory.shape)
+
     # variance in generated data, used later for error calculations
     data_variance = np.var(trajectoryHistory)
 
@@ -163,11 +170,18 @@ def main():
     featureVector_train = featureVector.construct_featureVector(trajectoryHistory_train[:, :-2])  # noqa: E501
     print('feature vector construction - finished')
 
+    print('trajectoryHistory_train: ', trajectoryHistory_train.shape)
+
+    print('featureVector_train:',featureVector_train.shape)
+
+
     # Preform regression
     print('-----------------------------')
     print('preform regression - started')
     # creates target output for change in dynamics over one time step
     target = trajectoryHistory_train[:, 2:-1]-trajectoryHistory_train[:, 1:-2]
+
+    print('target: ', target.shape)
 
     # perform regression to get coefficient_values
     # that maps featureVector to target
