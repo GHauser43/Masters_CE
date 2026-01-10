@@ -167,7 +167,7 @@ def main():
     # construct feature vector for training data
     featureVector = fv.FeatureVector(dim, k, s, p)
 
-    featureVector_train = featureVector.construct_featureVector(trajectoryHistory_train[:, :-2])  # noqa: E501
+    featureVector_train = featureVector.construct_featureVector(trajectoryHistory_train[:, :-1])  # noqa: E501
     print('feature vector construction - finished')
 
     print('trajectoryHistory_train: ', trajectoryHistory_train.shape)
@@ -179,7 +179,7 @@ def main():
     print('-----------------------------')
     print('preform regression - started')
     # creates target output for change in dynamics over one time step
-    target = trajectoryHistory_train[:, 2:-1]-trajectoryHistory_train[:, 1:-2]
+    target = trajectoryHistory_train[:, 2:]-trajectoryHistory_train[:, 1:-1]
 
     print('target: ', target.shape)
 
@@ -201,11 +201,11 @@ def main():
     print('-----------------------------')
     print('calculate training fit error - started')
 
-    prediction_train = mp.prediction_step(trajectoryHistory_train[:, 1:-2],
+    prediction_train = mp.prediction_step(trajectoryHistory_train[:, 1:-1],
                                           featureVector_train,
                                           coefficient_values)
 
-    difference_train = prediction_train - trajectoryHistory_train[:, 2:-1]
+    difference_train = prediction_train - trajectoryHistory_train[:, 2:]
     NRMSE_train = np.sqrt(np.mean(difference_train**2)/data_variance)
     print(f'training NRMSE:  {NRMSE_train:.4e}')
 
@@ -218,7 +218,7 @@ def main():
     # initialize storage for prediction
     prediction = np.zeros([dim, testTime_pts + delayTime_pts + 1])
     # copy over starting value with delay
-    prediction[:, 0:delayTime_pts + 1] = trajectoryHistory_train[:, -delayTime_pts - 1:]  # noqa: E501
+    prediction[:, 0:delayTime_pts + 1] = trajectoryHistory_train[:, -delayTime_pts:]  # noqa: E501
     # generates full prediction, removes initial delay taps
     prediction = mp.generate_prediction(prediction,
                                         delayTime_pts,
@@ -244,7 +244,7 @@ def main():
     plot.make_plot(trajectoryHistory,
                    timeHistory,
                    prediction_train,
-                   timeHistory_train[2:-1],
+                   timeHistory_train[2:],
                    prediction,
                    timeHistory_test,
                    dim,
