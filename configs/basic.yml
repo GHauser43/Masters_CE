@@ -2,12 +2,12 @@
 # this file is used for code development
 
 # time parameters 
-dt: 0.0025
+dt: 0.01
 startTime: 0.0
-warmupTime: 2.0
-trainTime: 10.0
-testTime: 10.0
-errorTime: 1.0
+warmupTime: 0.5
+trainTime: 0.5
+testTime: 0.5
+errorTime: 0.5
 
 # data generation parameters
 system: 'Lorenz_63'

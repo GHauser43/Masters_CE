@@ -16,6 +16,7 @@ class FeatureVector:
         self.k = k
         self.s = s
         self.p = p
+        self.delayTime_pts = (self.k - 1) * self.s
 
         self.dlin = self.d * self.k
         self.dnonlin = int(self.dlin * (self.dlin + 1) / 2)
@@ -27,9 +28,8 @@ class FeatureVector:
     def construct_linear(self, N, data):
         # initialize storage
         linear_featureVector = np.zeros((self.dlin, N))
-        for delay in range(self.k):
+        for delay in range(self.k):  # loop indexing accounts for (k-1)
             for j in range(delay, N):
-                # linear_featureVector[self.d * delay:self.d * (delay + 1), j] = data[:, j - delay]  # noqa: E501 (no s case)
                 linear_featureVector[self.d * delay:self.d * (delay + 1), j] = data[:, j - ((self.s)*(delay))]  # noqa: E501
         return linear_featureVector
 
@@ -92,4 +92,4 @@ class FeatureVector:
                                         linear_featureVector,
                                         nonlinear_featureVector))
         # remove delay taps, then return full feature vector
-        return full_featureVector[:, self.s * (self.k-1):]
+        return full_featureVector[:, self.delayTime_pts:]
