@@ -151,6 +151,29 @@ def main():
                           warmtrainTime_pts,
                           delayTime_pts,
                           totalTime_pts)
+
+    ### TEMP
+    print('-')
+    print('full')
+    print(timeHistory.shape)
+    print(timeHistory[0],timeHistory[-1])
+    print(trajectoryHistory.shape)
+    print(trajectoryHistory[0,0],trajectoryHistory[0,-1])
+    print('-')
+    print('train')
+    print(timeHistory_train.shape)
+    print(timeHistory_train[0],timeHistory_train[-1])
+    print(trajectoryHistory_train.shape)
+    print(trajectoryHistory_train[0,0],trajectoryHistory_train[0,-1])
+    print('-')
+    print('test')
+    print(timeHistory_test.shape)
+    print(timeHistory_test[0],timeHistory_test[-1])
+    print(trajectoryHistory_test.shape)
+    print(trajectoryHistory_test[0,0],trajectoryHistory_test[0,-1])
+    print('-')
+    ###
+
     print('data generation - finished')
 
     # Construct feature vector
@@ -161,6 +184,17 @@ def main():
     featureVector = fv.FeatureVector(dim, k, s, p)
 
     featureVector_train = featureVector.construct_featureVector(trajectoryHistory_train[:, :-2])  # noqa: E501
+
+    ### TEMP
+    print('-')
+    print('time')
+    print(timeHistory_train[delayTime_pts],timeHistory_train[-2])
+    print('fatureVector_train')
+    print(featureVector_train.shape)
+    print(featureVector_train[1,0],featureVector_train[1,-1])
+    print('-')
+    ###
+
     print('feature vector construction - finished')
 
     # Preform regression
@@ -168,6 +202,17 @@ def main():
     print('preform regression - started')
     # creates target output for change in dynamics over one time step
     target = trajectoryHistory_train[:, 2:-1]-trajectoryHistory_train[:, 1:-2]
+    # account for delay taps in target
+    target = target[:, delayTime_pts - 1 :]
+
+    ### TEMP
+    print('-')
+    print('target')
+    print(target.shape)
+    print('p1')
+    print(trajectoryHistory_train[:, 2:-1][0,-1])
+    print('-')
+    ###
 
     # perform regression to get coefficient_values
     # that maps featureVector to target
@@ -180,18 +225,24 @@ def main():
                                                maxIter)
     print('coefficient_values:')
     print(coefficient_values)
-    # TO-DO: add regression grid search option?
     print('preform regression - finished')
+
+    ### TEMP
+    print('-')
+    print('coeff values')
+    print(coefficient_values.shape)
+    print('-')
+    ###
 
     # make one prediction step to test training fit accuracy
     print('-----------------------------')
     print('calculate training fit error - started')
 
-    prediction_train = mp.prediction_step(trajectoryHistory_train[:, 1:-2],
+    prediction_train = mp.prediction_step(trajectoryHistory_train[:, delayTime_pts:-2],
                                           featureVector_train,
                                           coefficient_values)
 
-    difference_train = prediction_train - trajectoryHistory_train[:, 2:-1]
+    difference_train = prediction_train - trajectoryHistory_train[:, delayTime_pts+1:-1]
     NRMSE_train = np.sqrt(np.mean(difference_train**2)/data_variance)
     print(f'training NRMSE:  {NRMSE_train:.4e}')
 
@@ -230,7 +281,7 @@ def main():
     plot.make_plot(trajectoryHistory,
                    timeHistory,
                    prediction_train,
-                   timeHistory_train[2:-1],
+                   timeHistory_train[delayTime_pts+1:-1],
                    prediction,
                    timeHistory_test,
                    dim,

@@ -12,6 +12,28 @@ def make_plot(trajectoryHistory,
               dim,
               plotPath):
 
+    ### TEMP
+    print('-')
+    print('full')
+    print(timeHistory.shape)
+    print(timeHistory[0],timeHistory[-1])
+    print(trajectoryHistory.shape)
+    print(trajectoryHistory[0,0],trajectoryHistory[0,-1])
+    print('-')
+    print('train')
+    print(timeHistory_train.shape)
+    print(timeHistory_train[0],timeHistory_train[-1])
+    print(prediction_train.shape)
+    print(prediction_train[0,0],prediction_train[0,-1])
+    print('-')
+    print('test')
+    print(timeHistory_test.shape)
+    print(timeHistory_test[0],timeHistory_test[-1])
+    print(prediction.shape)
+    print(prediction[0,0],prediction[0,-1])
+    print('-')
+    ###
+
     fig, axes = plt.subplots(nrows=dim,
                              ncols=1,
                              figsize=(12, 8),

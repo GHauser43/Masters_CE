@@ -9,6 +9,16 @@ def prediction_step(trajectoryHistory_current,
     # featureVector_current - feature vector for trajectoryHistory_current
     # coefficient_values - coefficient values calculated in regression step
 
+    ### TEMP
+    print('-')
+    print(trajectoryHistory_current.shape)
+    print(coefficient_values.shape)
+    print(featureVector_current.shape) 
+    print((coefficient_values @ featureVector_current).shape)
+    print('-')
+    
+    ### TEMP
+
     prediction = trajectoryHistory_current + coefficient_values @ featureVector_current  # noqa: E501
 
     return prediction
