@@ -28,7 +28,7 @@ class FeatureVector:
     def construct_linear(self, N, data):
         # initialize storage
         linear_featureVector = np.zeros((self.dlin, N))
-        for delay in range(self.k): # loop indexing accounts for (k-1)
+        for delay in range(self.k):  # loop indexing accounts for (k-1)
             for j in range(delay, N):
                 linear_featureVector[self.d * delay:self.d * (delay + 1), j] = data[:, j - ((self.s)*(delay))]  # noqa: E501
         return linear_featureVector
