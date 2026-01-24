@@ -27,8 +27,8 @@ from scipy.integrate import solve_ivp
 #         ...
 
 #         define the system of equations
-#         output_value[0] = [equation_1]
-#         output_value[1] = [equation_2]
+#         output_values[0] = [equation_1]
+#         output_values[1] = [equation_2]
 #         ...
 
 #         return output_values
@@ -122,10 +122,39 @@ class Lorenz_9dim:
         return output_values
 
 
+class Rabinovich_Fabrikant:
+    # dimension of system
+    dim = 3
+
+    #  constants
+    alpha = 1.1
+    gamma = 0.87
+
+    # initial condition
+    X0 = np.array([-1.0, 0.0, 0.5])
+
+    def evaluate(self, X, t):
+        # initialize storage for output values
+        output_values = np.zeros(self.dim)
+
+        # unpack state variables
+        x = X[0]
+        y = X[1]
+        z = X[2]
+
+        # define the system of equations
+        output_values[0] = y * (z - 1 + x**2) + self.gamma * x
+        output_values[1] = x * (3 * z + 1 + x**2) + self.gamma * y
+        output_values[2] = - 2 * z * (self.alpha + x * y)
+
+        return output_values
+
+
 # dictionary to map user input to system of equations class
 system_of_equations_map = {
     'Lorenz_63': Lorenz_63,
     'Lorenz_9dim': Lorenz_9dim,
+    'Rab_Fab': Rabinovich_Fabrikant,
     }
 
 
@@ -228,9 +257,11 @@ def generate_data(numIntegrator, system, t0, dt, totalTime_pts):
                                                   t0)
 
     if np.isinf(trajectory_history).any():
-        raise ValueError("The generated trajectory contains Inf values. Try reducing the time step or changing the integrator.")  # noqa: E501
+        raise ValueError('The generated trajectory contains Inf values at point ' + str(np.isinf(trajectory_history).argmax()) + ' out of ' + str(trajectory_history.shape[1]) + '. Try reducing the time step or changing the integrator.')  # noqa: E501
     if np.isnan(trajectory_history).any():
-        raise ValueError("The generated trajectory contains NaN values. Try reducing the time step or changing the integrator.")  # noqa: E501
+        raise ValueError('The generated trajectory contains NaN values at point ' + str(np.isnan(trajectory_history).argmax()) + ' out of ' + str(trajectory_history.shape[1]) + '. Try reducing the time step or changing the integrator.')  # noqa: E501
+    if trajectory_history.shape[1] != (totalTime_pts + 1):
+        raise ValueError('trajectory_history incorrect size: lenght ' + str(trajectory_history.shape[1]) + ' out of ' + str(totalTime_pts + 1) +  ' data points. May be due to scipy solve_ivp encoruntering Inf or Nan values and failing silently')  # noqa: E501
 
     return trajectory_history, time_history, dim
 
@@ -285,5 +316,5 @@ def train_test_data_split(trajectoryHistory,
     timeHistory_test = split_data(timeHistory,
                                   warmtrainTime_pts,
                                   totalTime_pts + 1)
-
+    
     return trajectoryHistory_train, timeHistory_train, trajectoryHistory_test, timeHistory_test  # noqa: E501

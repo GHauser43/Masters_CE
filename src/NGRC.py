@@ -219,6 +219,7 @@ def main():
     print('-----------------------------')
     print('calculate prediction error - started')
 
+
     # calculates error for generated predictions, first column in array is IC
     difference_test = prediction[:, 1:errorTime_pts] - trajectoryHistory_test[:, 1:errorTime_pts]  # noqa: E501
     NRMSE_test = np.sqrt(np.mean(difference_test**2)/data_variance)
