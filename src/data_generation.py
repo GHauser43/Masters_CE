@@ -173,7 +173,7 @@ class Jerk1:
         # define the system of equations
         output_values[0] = x2
         output_values[1] = x3
-        output_values[2] = - self.a * x3 + x1 * x2**2 -x1**3
+        output_values[2] = - self.a * x3 + x1 * x2**2 - x1**3
 
         return output_values
 
@@ -203,7 +203,7 @@ class Jerk2:
         # define the system of equations
         output_values[0] = x2
         output_values[1] = x3
-        output_values[2] = - self.a * x3 - self.b * x1 + self.c * x2 + x1 * x2**2 - x1**3
+        output_values[2] = - self.a * x3 - self.b * x1 + self.c * x2 + x1 * x2**2 - x1**3  # noqa: E501
 
         return output_values
 
@@ -321,7 +321,7 @@ def generate_data(numIntegrator, system, t0, dt, totalTime_pts):
     if np.isnan(trajectory_history).any():
         raise ValueError('The generated trajectory contains NaN values at point ' + str(np.isnan(trajectory_history).argmax()) + ' out of ' + str(trajectory_history.shape[1]) + '. Try reducing the time step or changing the integrator.')  # noqa: E501
     if trajectory_history.shape[1] != (totalTime_pts + 1):
-        raise ValueError('trajectory_history incorrect size: lenght ' + str(trajectory_history.shape[1]) + ' out of ' + str(totalTime_pts + 1) +  ' data points. May be due to scipy solve_ivp encoruntering Inf or Nan values and failing silently')  # noqa: E501
+        raise ValueError('trajectory_history incorrect size: lenght ' + str(trajectory_history.shape[1]) + ' out of ' + str(totalTime_pts + 1) + ' data points. May be due to scipy solve_ivp encoruntering Inf or Nan values and failing silently')  # noqa: E501
 
     return trajectory_history, time_history, dim
 
@@ -376,5 +376,5 @@ def train_test_data_split(trajectoryHistory,
     timeHistory_test = split_data(timeHistory,
                                   warmtrainTime_pts,
                                   totalTime_pts + 1)
-    
+
     return trajectoryHistory_train, timeHistory_train, trajectoryHistory_test, timeHistory_test  # noqa: E501

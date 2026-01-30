@@ -2,27 +2,27 @@
 # this file is used for code development
 
 # time parameters 
-dt: 0.01
+dt: 0.0025
 startTime: 0.0
-warmupTime: 0.5
-trainTime: 0.5
-testTime: 0.5
-errorTime: 0.5
+warmupTime: 2.0
+trainTime: 10.0
+testTime: 1.0
+errorTime: 1.0
 
 # data generation parameters
-system: 'Lorenz_63'
+system: 'Jerk2'
 numerical_integrator: 'rk4'
 
 # feature vector parameters
 k: 2
 s: 1
-p: 2
+p: 3
 
 # regression parameters
 regression_method: 'ridge'
 lambda1: 1.5e-6
 lambda2: 1.5e-6
-tolerance: 1.0e-7
+tolerance: 1.0e-6
 maxIterations: 200000000
 
 # plot parameters
