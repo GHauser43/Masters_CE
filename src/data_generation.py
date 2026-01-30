@@ -9,26 +9,26 @@ from scipy.integrate import solve_ivp
 #     # dimension of system
 #     dim = [dimension]
 
-#     #  constants
+#     # constants
 #     [constant_1] = [value_1]
 #     [constant_2] = [value_2]
 #     ...
 
-#     initial condition
+#     # initial condition
 #     X0 = np.array([value_1, value_2, ... , value_dim])
 
 #     def evaluate(self, X, t):
-#         initialize storage for output values
+#         # initialize storage for output values
 #         output_values = np.zeros(self.dim)
 
-#         unpack state variables
+#         # unpack state variables
 #         x1 = X[0]
 #         x2 = X[1]
 #         ...
 
-#         define the system of equations
-#         output_value[0] = [equation_1]
-#         output_value[1] = [equation_2]
+#         # define the system of equations
+#         output_values[0] = [equation_1]
+#         output_values[1] = [equation_2]
 #         ...
 
 #         return output_values
@@ -122,10 +122,99 @@ class Lorenz_9dim:
         return output_values
 
 
+class Rabinovich_Fabrikant:
+    # dimension of system
+    dim = 3
+
+    #  constants
+    alpha = 1.1
+    gamma = 0.87
+
+    # initial condition
+    X0 = np.array([-1.0, 0.0, 0.5])
+
+    def evaluate(self, X, t):
+        # initialize storage for output values
+        output_values = np.zeros(self.dim)
+
+        # unpack state variables
+        x = X[0]
+        y = X[1]
+        z = X[2]
+
+        # define the system of equations
+        output_values[0] = y * (z - 1 + x**2) + self.gamma * x
+        output_values[1] = x * (3 * z + 1 + x**2) + self.gamma * y
+        output_values[2] = - 2 * z * (self.alpha + x * y)
+
+        return output_values
+
+
+# chaotic jerk system #1
+class Jerk1:
+    # dimension of system
+    dim = 3
+
+    #  constants
+    a = 3.6
+
+    # initial condition
+    X0 = np.array([0.5, 0.5, 0.5])
+
+    def evaluate(self, X, t):
+        # initialize storage for output values
+        output_values = np.zeros(self.dim)
+
+        # unpack state variables
+        x1 = X[0]
+        x2 = X[1]
+        x3 = X[2]
+
+        # define the system of equations
+        output_values[0] = x2
+        output_values[1] = x3
+        output_values[2] = - self.a * x3 + x1 * x2**2 - x1**3
+
+        return output_values
+
+
+# chaotic jerk system #2
+class Jerk2:
+    # dimension of system
+    dim = 3
+
+    #  constants
+    a = 3.6
+    b = 1.3
+    c = 0.1
+
+    # initial condition
+    X0 = np.array([0.5, 0.5, 0.5])
+
+    def evaluate(self, X, t):
+        # initialize storage for output values
+        output_values = np.zeros(self.dim)
+
+        # unpack state variables
+        x1 = X[0]
+        x2 = X[1]
+        x3 = X[2]
+
+        # define the system of equations
+        output_values[0] = x2
+        output_values[1] = x3
+        output_values[2] = - self.a * x3 - self.b * x1 + self.c * x2 + x1 * x2**2 - x1**3  # noqa: E501
+
+        return output_values
+
+
 # dictionary to map user input to system of equations class
 system_of_equations_map = {
     'Lorenz_63': Lorenz_63,
     'Lorenz_9dim': Lorenz_9dim,
+    'Rab_Fab': Rabinovich_Fabrikant,
+    'Jerk1': Jerk1,
+    'Jerk2': Jerk2,
     }
 
 
@@ -228,9 +317,11 @@ def generate_data(numIntegrator, system, t0, dt, totalTime_pts):
                                                   t0)
 
     if np.isinf(trajectory_history).any():
-        raise ValueError("The generated trajectory contains Inf values. Try reducing the time step or changing the integrator.")  # noqa: E501
+        raise ValueError('The generated trajectory contains Inf values at point ' + str(np.isinf(trajectory_history).argmax()) + ' out of ' + str(trajectory_history.shape[1]) + '. Try reducing the time step or changing the integrator.')  # noqa: E501
     if np.isnan(trajectory_history).any():
-        raise ValueError("The generated trajectory contains NaN values. Try reducing the time step or changing the integrator.")  # noqa: E501
+        raise ValueError('The generated trajectory contains NaN values at point ' + str(np.isnan(trajectory_history).argmax()) + ' out of ' + str(trajectory_history.shape[1]) + '. Try reducing the time step or changing the integrator.')  # noqa: E501
+    if trajectory_history.shape[1] != (totalTime_pts + 1):
+        raise ValueError('trajectory_history incorrect size: lenght ' + str(trajectory_history.shape[1]) + ' out of ' + str(totalTime_pts + 1) + ' data points. May be due to scipy solve_ivp encoruntering Inf or Nan values and failing silently')  # noqa: E501
 
     return trajectory_history, time_history, dim
 

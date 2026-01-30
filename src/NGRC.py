@@ -196,7 +196,7 @@ def main():
 
     difference_train = prediction_train - trajectoryHistory_train[:, delayTime_pts+1:-1]  # noqa: E501
     NRMSE_train = np.sqrt(np.mean(difference_train**2)/data_variance)
-    print(f'training NRMSE:  {NRMSE_train:.4e}')
+    print(f'training NRMSE:  {NRMSE_train:.6e}')
 
     print('calculate training fit error - finished')
 
@@ -222,7 +222,7 @@ def main():
     # calculates error for generated predictions, first column in array is IC
     difference_test = prediction[:, 1:errorTime_pts] - trajectoryHistory_test[:, 1:errorTime_pts]  # noqa: E501
     NRMSE_test = np.sqrt(np.mean(difference_test**2)/data_variance)
-    print(f'testing NRMSE:  {NRMSE_test:.4e}')
+    print(f'testing NRMSE:  {NRMSE_test:.6e}')
 
     print('calculate prediction error - finished')
 

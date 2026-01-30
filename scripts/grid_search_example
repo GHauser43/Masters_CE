@@ -59,7 +59,7 @@ EOF
 # data.csv stores data produced by script
 touch  "$directory/data.csv"
 # generate header
-echo "system,numerical_integrator,k,s,p,regression_method,lambda1,lambda2,tolerance,maxIterations,convergence,itrainNRMSE,testNRMSE,runTime" >> ${directory}/data.csv
+echo "system,numerical_integrator,k,s,p,regression_method,lambda1,lambda2,tolerance,maxIterations,convergence,trainNRMSE,testNRMSE,runTime" >> ${directory}/data.csv
 
 # LOOP TEMPLATES:
 # <yml_param> is value to update in temp.yml
