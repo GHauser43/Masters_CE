@@ -122,34 +122,6 @@ class Lorenz_9dim:
         return output_values
 
 
-class Rabinovich_Fabrikant:
-    # dimension of system
-    dim = 3
-
-    #  constants
-    alpha = 1.1
-    gamma = 0.87
-
-    # initial condition
-    X0 = np.array([-1.0, 0.0, 0.5])
-
-    def evaluate(self, X, t):
-        # initialize storage for output values
-        output_values = np.zeros(self.dim)
-
-        # unpack state variables
-        x = X[0]
-        y = X[1]
-        z = X[2]
-
-        # define the system of equations
-        output_values[0] = y * (z - 1 + x**2) + self.gamma * x
-        output_values[1] = x * (3 * z + 1 + x**2) + self.gamma * y
-        output_values[2] = - 2 * z * (self.alpha + x * y)
-
-        return output_values
-
-
 # chaotic jerk system #1
 class Jerk1:
     # dimension of system
