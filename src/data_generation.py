@@ -184,7 +184,6 @@ class Jerk2:
 system_of_equations_map = {
     'Lorenz_63': Lorenz_63,
     'Lorenz_9dim': Lorenz_9dim,
-    'Rab_Fab': Rabinovich_Fabrikant,
     'Jerk1': Jerk1,
     'Jerk2': Jerk2,
     }
