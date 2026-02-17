@@ -233,7 +233,6 @@ defined_integrate_map = {
 scipy_integrate_list = [
     'RK23', 'RK45', 'DOP853', 'Radau', 'BDF', 'LSODA'
     ]
-# TO-DO: implement all scipy.integrate solve_ivp methods
 
 
 def generate_data(numIntegrator, system, t0, dt, totalTime_pts):

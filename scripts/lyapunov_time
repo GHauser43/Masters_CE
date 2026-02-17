@@ -1,3 +1,12 @@
 #!/bin/bash
 
-echo "get lyapunov time TODO"
+echo "||"
+echo "|| running - find Lyapunov time"
+echo "||"
+
+python3 src/lyapunov_time/find_lyapunov_time.py --system Lorenz_63
+
+echo "||"
+echo "|| finished"
+echo "||"
+
