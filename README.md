@@ -2,13 +2,15 @@
 Generalized Next Generation Reservoir Computing (NGRC)
 
 ## working documentation
-- Execute program with ./scripts/run from root directory
+- Execute NGRC program with ./scripts/run from root directory
 - Configuration files can be found in configs directory 
 - Program results can be found in results/output.txt and results/plot.png
 - Additional dynamical systems can be added by modifying src/data\_generation.py file. Template can be found at top of file.
+- Script for calculating Lyapunov exponents/time in scripts/lyapunov\_time. 
+    - Runs src/layapunov\_time/find\_lyapunov\_time.py, with systems being defined in src/layapunov\_time/systems.py
 
 ## NGRC overview
-0. Configuration File
+0. Configuration File/ scripts
 1. data generation
 2. feature vector construction
 3. perform regression
