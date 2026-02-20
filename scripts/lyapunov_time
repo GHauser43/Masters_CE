@@ -3,9 +3,11 @@
 echo "||"
 echo "|| running - find Lyapunov time"
 echo "||"
+echo ""
 
 python3 src/lyapunov_time/find_lyapunov_time.py --system Lorenz_63
 
+echo ""
 echo "||"
 echo "|| finished"
 echo "||"
