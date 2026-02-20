@@ -41,37 +41,26 @@ class Lorenz_63:
         output_values[1] = self.r * x1 - x2 - x1 * x3
         output_values[2] = x1 * x2 - self.b * x3
 
-
-    ### TODO clean this up
         # convert varation from vector to matrix to simplify computations
-        variational_matrix = np.zeros([self.system_dim,self.system_dim])
-        for i in range(0,self.system_dim):
-            variational_matrix[i,:] = X[self.system_dim*(i+1):self.system_dim*(i+2)]
+        variational_matrix = np.zeros([self.system_dim, self.system_dim])
+        for i in range(0, self.system_dim):
+            variational_matrix[i, :] = X[self.system_dim*(i+1):
+                                         self.system_dim*(i+2)]
 
         # compute jacobian dot variational matrix
         for j in range(self.system_dim):  # loop over jacobian rows
             for v in range(self.system_dim):  # loop over variational columns
-                output_values[self.system_dim + j*self.system_dim + v] = np.dot(J[j*self.system_dim:(j+1)*self.system_dim], variational_matrix[:,v])
- 
+                output_values[self.system_dim + j*self.system_dim + v] = \
+                    np.dot(J[j*self.system_dim:(j+1)*self.system_dim],
+                           variational_matrix[:, v])
+
         return output_values
-
-
-
-
-
-
-
-
-
-
-
 
 
 # dictionary to map string to system of equations class
 system_of_equations_map = {
     'Lorenz_63': Lorenz_63,
-    #'Lorenz_9dim': Lorenz_9dim,
-    #'Jerk1': Jerk1,
-    #'Jerk2': Jerk2,
+    #  'Lorenz_9dim': Lorenz_9dim,
+    #  'Jerk1': Jerk1,
+    #  'Jerk2': Jerk2,
     }
-

@@ -3,6 +3,7 @@ import numpy as np
 import matplotlib.pyplot as plt
 import systems
 
+
 class Packing:
 
     def __init__(self, vec_dim, mat_rows, mat_cols):
@@ -19,20 +20,21 @@ class Packing:
         # flattens matrix (row order) and vec to create full_vector
         full_vec = np.zeros(self.full_dim)
         full_vec[0:self.vec_dim] = vec
-        for i in range(0,self.mat_rows):
-            full_vec[(1+i)*self.mat_cols:(2+i)*self.mat_cols] = matrix[i,:]
-    
+        for i in range(0, self.mat_rows):
+            full_vec[(1+i)*self.mat_cols:(2+i)*self.mat_cols] = matrix[i, :]
+
         return full_vec
-    
+
     def unpack(self, full_vec):
         # reconstructs matrix and vector from full_vector
         vec = np.zeros(self.vec_dim)
         matrix = np.zeros([self.mat_rows, self.mat_cols])
         vec = full_vec[0:self.vec_dim]
-        for i in range(0,self.mat_rows):
-            matrix[i,:] = full_vec[(i+1)*self.mat_cols: (2+i)*self.mat_cols]
+        for i in range(0, self.mat_rows):
+            matrix[i, :] = full_vec[(i+1)*self.mat_cols: (2+i)*self.mat_cols]
 
         return vec, matrix
+
 
 def runge_kutta_4(system, X0, t, h):
     k1 = system.evaluate(X0, t)
@@ -75,7 +77,6 @@ def main():
                         type=float,
                         default=0.0025)
 
-
     args = parser.parse_args()
 
     system = args.system
@@ -84,18 +85,19 @@ def main():
     tau = args.tau
     t0 = args.t0
     dt = args.dt
-    
+
     # creates instance of system defined in systems.py
-        # converts string input to instance of class object 
-        #   using systems_of_equations_map
+    #    converts string input to instance of class object
+    #    using systems_of_equations_map
     system = systems.system_of_equations_map[system]()
 
     # data generation to get on attractor
-    # setup IC with dummy variation (not numerically efficient, but good enough)
+    # setup IC with dummy variation (not numerically efficient, good enough)
     dummy_variational = np.zeros([system.dim])
     dummy_variational[0:system.system_dim] = system.X0
     # initialize trajectory storage
-    trajectroy_history_transient = np.zeros([system.system_dim,timePts_transient+1])
+    trajectroy_history_transient = np.zeros([system.system_dim,
+                                             timePts_transient+1])
     # time points
     time_history_transient = np.linspace(t0,
                                          t0+dt*timePts_transient,
@@ -106,13 +108,13 @@ def main():
         t = time_history_transient[i]
         trajectroy_history_transient[:, i] = X0[0:system.system_dim]
         X0 = runge_kutta_4(system, X0, t, dt)
-    
+
     # Lyapunov exponent calculations
-    # Benettin, Giancarlo, et al. 
+    # Benettin, Giancarlo, et al.
     # "Lyapunov characteristic exponents for smooth dynamical systems and for
-    # Hamiltonian systems; a method for computing all of them. 
+    # Hamiltonian systems; a method for computing all of them.
     # Part 1: Theory." Meccanica 15.1 (1980): 9-20.
-    
+
     # define variational_matrix (must be orthonormal)
     variational_matrix = np.identity(system.system_dim)
 
@@ -120,7 +122,7 @@ def main():
     S = np.zeros(system.system_dim)
 
     print('initial condition is:')
-    print(trajectroy_history_transient[:,-1],
+    print(trajectroy_history_transient[:, -1],
           'at time', time_history_transient[-1])
 
     print('')
