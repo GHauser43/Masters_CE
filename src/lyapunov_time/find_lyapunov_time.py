@@ -86,6 +86,7 @@ def main():
     t0 = args.t0
     dt = args.dt
 
+    print('system:', system)
     # creates instance of system defined in systems.py
     #    converts string input to instance of class object
     #    using systems_of_equations_map
@@ -127,7 +128,7 @@ def main():
 
     print('')
     print('time steps per renormalization (timePts):', timePts)
-    print('# renormalization steps (tau):           ', tau)
+    print('number of renormalization steps (tau)    ', tau)
     print('time per step (dt):                      ', dt)
     print('total simulation time:                   ', tau * timePts * dt)
     print('renormalization interval:                ', timePts * dt)

@@ -11,6 +11,13 @@ echo ""
 
 python3 src/lyapunov_time/find_lyapunov_time.py --system Lorenz_63
 
+# get nan values for larger tau for this system/ param combination
+python3 src/lyapunov_time/find_lyapunov_time.py --system Lorenz_9dim  --tau 3800
+
+python3 src/lyapunov_time/find_lyapunov_time.py --system Jerk1 --tau 10000 --timePts_transient 10000 --timePts 100
+
+python3 src/lyapunov_time/find_lyapunov_time.py --system Jerk2
+
 echo ""
 echo "||"
 echo "|| finished"
