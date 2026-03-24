@@ -1,0 +1,26 @@
+# time parameters 
+dt: 0.165
+startTime: 0.0
+warmupTime: 2.0
+trainTime: 66
+testTime: 66
+errorTime: 6.638
+
+# data generation parameters
+system: 'Jerk1'
+numerical_integrator: 'rk4'
+
+# feature vector parameters
+k: 2
+s: 1
+p: 3
+
+# regression parameters
+regression_method: 'lasso'
+lambda1: 10.0e-6
+tolerance: 5.0e-5
+maxIterations: 200000000
+
+# plot parameters
+plotPath: 'results/testing/Jerk1/Jerk1_lasso_p3_t5e-5.png'
+
