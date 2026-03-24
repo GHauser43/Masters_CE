@@ -8,6 +8,9 @@ Generalized Next Generation Reservoir Computing (NGRC)
 - Additional dynamical systems can be added by modifying src/data\_generation.py file. Template can be found at top of file.
 - Script for calculating Lyapunov exponents/time in scripts/lyapunov\_time. 
     - Runs src/layapunov\_time/find\_lyapunov\_time.py, with systems being defined in src/layapunov\_time/systems.py
+- Paper results:
+    - $\lambda$'s found using scripts in scripts/testing\_lambda\_search/*
+    - Results in paper can be replicated by running ./scripts/testing\_run (may need to make directories for results)
 
 ## NGRC overview
 0. Configuration File/ scripts
