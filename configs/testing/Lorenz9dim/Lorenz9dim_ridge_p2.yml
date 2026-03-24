@@ -1,0 +1,24 @@
+# time parameters 
+dt: 0.0142
+startTime: 0.0
+warmupTime: 2.0
+trainTime: 17.0
+testTime: 17.0
+errorTime: 1.708
+
+# data generation parameters
+system: 'Lorenz_9dim'
+numerical_integrator: 'RK45'
+
+# feature vector parameters
+k: 2
+s: 1
+p: 2
+
+# regression parameters
+regression_method: 'ridge'
+lambda2: 8.5e-6
+
+# plot parameters
+plotPath: 'results/testing/Lorenz9dim/Lorenz9dim_ridge_p2.png'
+

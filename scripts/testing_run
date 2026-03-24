@@ -1,0 +1,181 @@
+#!/bin/bash
+
+# run ./scripts/run from root directory
+
+echo "||"
+echo "|| running"
+echo "||"
+
+
+echo "=== ridge ==="
+echo "-- Lorenz63: --"
+echo "p = 2"
+python3 src/NGRC.py --config configs/testing/Lorenz63/Lorenz63_ridge_p2.yml \
+                           > results/testing/Lorenz63/Lorenz63_ridge_p2.txt
+
+echo "p = 3"
+python3 src/NGRC.py --config configs/testing/Lorenz63/Lorenz63_ridge_p3.yml \
+                            > results/testing/Lorenz63/Lorenz63_ridge_p3.txt
+
+
+echo "-- Lorenz9dim: --"
+echo "p = 2"
+python3 src/NGRC.py --config configs/testing/Lorenz9dim/Lorenz9dim_ridge_p2.yml \
+                           > results/testing/Lorenz9dim/Lorenz9dim_ridge_p2.txt
+
+echo "p = 3"
+python3 src/NGRC.py --config configs/testing/Lorenz9dim/Lorenz9dim_ridge_p3.yml \
+                           > results/testing/Lorenz9dim/Lorenz9dim_ridge_p3.txt
+
+
+echo "-- Jerk1: --"
+echo "p = 2"
+python3 src/NGRC.py --config configs/testing/Jerk1/Jerk1_ridge_p2.yml \
+                           > results/testing/Jerk1/Jerk1_ridge_p2.txt
+
+echo "p = 3"
+python3 src/NGRC.py --config configs/testing/Jerk1/Jerk1_ridge_p3.yml \
+                           > results/testing/Jerk1/Jerk1_ridge_p3.txt
+
+echo "p = 4"
+python3 src/NGRC.py --config configs/testing/Jerk1/Jerk1_ridge_p4.yml \
+                           > results/testing/Jerk1/Jerk1_ridge_p4.txt
+
+
+echo "-- Jerk2: --"
+echo "p = 2"
+python3 src/NGRC.py --config configs/testing/Jerk2/Jerk2_ridge_p2.yml \
+                           > results/testing/Jerk2/Jerk2_ridge_p2.txt
+
+echo "p = 3"
+python3 src/NGRC.py --config configs/testing/Jerk2/Jerk2_ridge_p3.yml \
+                           > results/testing/Jerk2/Jerk2_ridge_p3.txt
+
+echo "p = 4"
+python3 src/NGRC.py --config configs/testing/Jerk2/Jerk2_ridge_p4.yml \
+                           > results/testing/Jerk2/Jerk2_ridge_p4.txt
+
+
+
+echo "=== lasso ==="
+echo "-- Lorenz63: --"
+echo "p = 2"
+echo "tol = 5.0e-5"
+python3 src/NGRC.py --config configs/testing/Lorenz63/Lorenz63_lasso_p2_t5e-5.yml \
+                           > results/testing/Lorenz63/Lorenz63_lasso_p2_t5e-5.txt
+echo "tol = 1.0e-5"
+python3 src/NGRC.py --config configs/testing/Lorenz63/Lorenz63_lasso_p2_t1e-5.yml \
+                           > results/testing/Lorenz63/Lorenz63_lasso_p2_t1e-5.txt
+echo "tol = 5.0e-6"
+python3 src/NGRC.py --config configs/testing/Lorenz63/Lorenz63_lasso_p2_t5e-6.yml \
+                           > results/testing/Lorenz63/Lorenz63_lasso_p2_t5e-6.txt
+
+echo "p = 3"
+echo "tol = 5.0e-5"
+python3 src/NGRC.py --config configs/testing/Lorenz63/Lorenz63_lasso_p3_t5e-5.yml \
+                           > results/testing/Lorenz63/Lorenz63_lasso_p3_t5e-5.txt
+echo "tol = 1.0e-5"
+python3 src/NGRC.py --config configs/testing/Lorenz63/Lorenz63_lasso_p3_t1e-5.yml \
+                           > results/testing/Lorenz63/Lorenz63_lasso_p3_t1e-5.txt
+echo "tol = 5.0e-6"
+python3 src/NGRC.py --config configs/testing/Lorenz63/Lorenz63_lasso_p3_t5e-6.yml \
+                           > results/testing/Lorenz63/Lorenz63_lasso_p3_t5e-6.txt
+
+
+echo "-- Lorenz9dim: --"
+echo "p = 2"
+echo "tol = 5.0e-5"
+python3 src/NGRC.py --config configs/testing/Lorenz9dim/Lorenz9dim_lasso_p2_t5e-5.yml \
+                           > results/testing/Lorenz9dim/Lorenz9dim_lasso_p2_t5e-5.txt
+echo "tol = 1.0e-5"
+python3 src/NGRC.py --config configs/testing/Lorenz9dim/Lorenz9dim_lasso_p2_t1e-5.yml \
+                           > results/testing/Lorenz9dim/Lorenz9dim_lasso_p2_t1e-5.txt
+echo "tol = 5.0e-6"
+python3 src/NGRC.py --config configs/testing/Lorenz9dim/Lorenz9dim_lasso_p2_t5e-6.yml \
+                           > results/testing/Lorenz9dim/Lorenz9dim_lasso_p2_t5e-6.txt
+
+echo "p = 3"
+echo "tol = 5.0e-5"
+python3 src/NGRC.py --config configs/testing/Lorenz9dim/Lorenz9dim_lasso_p3_t5e-5.yml \
+                           > results/testing/Lorenz9dim/Lorenz9dim_lasso_p3_t5e-5.txt
+echo "tol = 1.0e-5"
+python3 src/NGRC.py --config configs/testing/Lorenz9dim/Lorenz9dim_lasso_p3_t1e-5.yml \
+                           > results/testing/Lorenz9dim/Lorenz9dim_lasso_p3_t1e-5.txt
+echo "tol = 5.0e-6"
+python3 src/NGRC.py --config configs/testing/Lorenz9dim/Lorenz9dim_lasso_p3_t5e-6.yml \
+                           > results/testing/Lorenz9dim/Lorenz9dim_lasso_p3_t5e-6.txt
+
+
+echo "-- Jerk1 --"
+echo "p = 2"
+echo "tol = 5.0e-5"
+python3 src/NGRC.py --config configs/testing/Jerk1/Jerk1_lasso_p2_t5e-5.yml \
+                           > results/testing/Jerk1/Jerk1_lasso_p2_t5e-5.txt
+echo "tol = 1.0e-5"
+python3 src/NGRC.py --config configs/testing/Jerk1/Jerk1_lasso_p2_t1e-5.yml \
+                           > results/testing/Jerk1/Jerk1_lasso_p2_t1e-5.txt
+echo "tol = 5.0e-6"
+python3 src/NGRC.py --config configs/testing/Jerk1/Jerk1_lasso_p2_t5e-6.yml \
+                           > results/testing/Jerk1/Jerk1_lasso_p2_t5e-6.txt
+
+echo "p = 3"
+echo "tol = 5.0e-5"
+python3 src/NGRC.py --config configs/testing/Jerk1/Jerk1_lasso_p3_t5e-5.yml \
+                           > results/testing/Jerk1/Jerk1_lasso_p3_t5e-5.txt
+echo "tol = 1.0e-5"
+python3 src/NGRC.py --config configs/testing/Jerk1/Jerk1_lasso_p3_t1e-5.yml \
+                           > results/testing/Jerk1/Jerk1_lasso_p3_t1e-5.txt
+echo "tol = 5.0e-6"
+python3 src/NGRC.py --config configs/testing/Jerk1/Jerk1_lasso_p3_t5e-6.yml \
+                           > results/testing/Jerk1/Jerk1_lasso_p3_t5e-6.txt
+
+echo "p = 4"
+echo "tol = 5.0e-5"
+python3 src/NGRC.py --config configs/testing/Jerk1/Jerk1_lasso_p4_t5e-5.yml \
+                           > results/testing/Jerk1/Jerk1_lasso_p4_t5e-5.txt
+echo "tol = 1.0e-5"
+python3 src/NGRC.py --config configs/testing/Jerk1/Jerk1_lasso_p4_t1e-5.yml \
+                           > results/testing/Jerk1/Jerk1_lasso_p4_t1e-5.txt
+echo "tol = 5.0e-6"
+python3 src/NGRC.py --config configs/testing/Jerk1/Jerk1_lasso_p4_t5e-6.yml \
+                           > results/testing/Jerk1/Jerk1_lasso_p4_t5e-6.txt
+
+
+echo "-- Jerk2 --"
+echo "p = 2"
+echo "tol = 5.0e-5"
+python3 src/NGRC.py --config configs/testing/Jerk2/Jerk2_lasso_p2_t5e-5.yml \
+                           > results/testing/Jerk2/Jerk2_lasso_p2_t5e-5.txt
+echo "tol = 1.0e-5"
+python3 src/NGRC.py --config configs/testing/Jerk2/Jerk2_lasso_p2_t1e-5.yml \
+                           > results/testing/Jerk2/Jerk2_lasso_p2_t1e-5.txt
+echo "tol = 5.0e-6"
+python3 src/NGRC.py --config configs/testing/Jerk2/Jerk2_lasso_p2_t5e-6.yml \
+                           > results/testing/Jerk2/Jerk2_lasso_p2_t5e-6.txt
+
+echo "p = 3"
+echo "tol = 5.0e-5"
+python3 src/NGRC.py --config configs/testing/Jerk2/Jerk2_lasso_p3_t5e-5.yml \
+                           > results/testing/Jerk2/Jerk2_lasso_p3_t5e-5.txt
+echo "tol = 1.0e-5"
+python3 src/NGRC.py --config configs/testing/Jerk2/Jerk2_lasso_p3_t1e-5.yml \
+                           > results/testing/Jerk2/Jerk2_lasso_p3_t1e-5.txt
+echo "tol = 5.0e-6"
+python3 src/NGRC.py --config configs/testing/Jerk2/Jerk2_lasso_p3_t5e-6.yml \
+                           > results/testing/Jerk2/Jerk2_lasso_p3_t5e-6.txt
+
+echo "p = 4"
+echo "tol = 5.0e-5"
+python3 src/NGRC.py --config configs/testing/Jerk2/Jerk2_lasso_p4_t5e-5.yml \
+                           > results/testing/Jerk2/Jerk2_lasso_p4_t5e-5.txt
+echo "tol = 1.0e-5"
+python3 src/NGRC.py --config configs/testing/Jerk2/Jerk2_lasso_p4_t1e-5.yml \
+                           > results/testing/Jerk2/Jerk2_lasso_p4_t1e-5.txt
+echo "tol = 5.0e-6"
+python3 src/NGRC.py --config configs/testing/Jerk2/Jerk2_lasso_p4_t5e-6.yml \
+                           > results/testing/Jerk2/Jerk2_lasso_p4_t5e-6.txt
+
+
+echo "||"
+echo "|| finished"
+echo "||"
