@@ -183,6 +183,7 @@ def main():
                                                tol,
                                                maxIter)
     print('coefficient_values:')
+    print(coefficient_values.shape)
     print(coefficient_values)
     print('preform regression - finished')
 
